@@ -33,6 +33,13 @@ class TerangaViewModelFactory(private val locator: ServiceLocator) : ViewModelPr
                     locator.scamSimulator,
                 ) as T
 
+            modelClass.isAssignableFrom(com.terangashield.app.ui.settings.ReportedNumbersViewModel::class.java) ->
+                com.terangashield.app.ui.settings.ReportedNumbersViewModel(
+                    locator.reportRepository,
+                    locator.callRepository,
+                    locator.smsRepository,
+                ) as T
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

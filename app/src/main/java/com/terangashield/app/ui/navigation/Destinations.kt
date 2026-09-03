@@ -20,6 +20,7 @@ object Destinations {
     const val DIALER = "dialer"
     const val CONTACTS = "contacts"
     const val NEW_MESSAGE = "new_message"
+    const val REPORTED_NUMBERS = "reported_numbers"
 
     val bottomBarRoutes = listOf(HOME, CALLS, MESSAGES, SETTINGS)
 }

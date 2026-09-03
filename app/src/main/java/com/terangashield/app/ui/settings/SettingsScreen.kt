@@ -2,6 +2,7 @@ package com.terangashield.app.ui.settings
 
 import android.text.format.DateFormat
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -22,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -42,7 +47,7 @@ import com.terangashield.app.ui.components.TrustedContactRow
 import java.util.Date
 
 @Composable
-fun SettingsScreen(locator: ServiceLocator, onResetOnboarding: () -> Unit) {
+fun SettingsScreen(locator: ServiceLocator, onResetOnboarding: () -> Unit, onOpenReportHistory: () -> Unit) {
     val viewModel: SettingsViewModel = viewModel(factory = TerangaViewModelFactory(locator))
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val reportHistory by viewModel.reportHistory.collectAsStateWithLifecycle()
@@ -129,11 +134,19 @@ fun SettingsScreen(locator: ServiceLocator, onResetOnboarding: () -> Unit) {
 
             HorizontalDivider()
 
-            Text(stringResource(R.string.settings_report_history), style = MaterialTheme.typography.titleMedium)
-            Text(
-                "${reportHistory.size}",
-                style = MaterialTheme.typography.bodyLarge,
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onOpenReportHistory),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column {
+                    Text(stringResource(R.string.settings_report_history), style = MaterialTheme.typography.titleMedium)
+                    Text("${reportHistory.size}", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Icon(Icons.Filled.ChevronRight, contentDescription = null)
+            }
 
             HorizontalDivider()
 

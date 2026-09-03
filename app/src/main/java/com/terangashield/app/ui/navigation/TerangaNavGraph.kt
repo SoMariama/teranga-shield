@@ -38,6 +38,7 @@ import com.terangashield.app.ui.onboarding.PrivacyScreen
 import com.terangashield.app.ui.onboarding.TrustedContactSetupScreen
 import com.terangashield.app.ui.onboarding.WelcomeScreen
 import com.terangashield.app.ui.onboarding.WhyDefaultRolesScreen
+import com.terangashield.app.ui.settings.ReportedNumbersScreen
 import com.terangashield.app.ui.settings.SettingsScreen
 
 @Composable
@@ -155,9 +156,16 @@ fun TerangaNavGraph(locator: ServiceLocator) {
                 MessageDetailScreen(locator = locator, messageId = messageId, onBack = { navController.popBackStack() })
             }
             composable(Destinations.SETTINGS) {
-                SettingsScreen(locator = locator, onResetOnboarding = {
-                    navController.navigate(Destinations.ONBOARDING_WELCOME) { popUpTo(0) }
-                })
+                SettingsScreen(
+                    locator = locator,
+                    onResetOnboarding = {
+                        navController.navigate(Destinations.ONBOARDING_WELCOME) { popUpTo(0) }
+                    },
+                    onOpenReportHistory = { navController.navigate(Destinations.REPORTED_NUMBERS) },
+                )
+            }
+            composable(Destinations.REPORTED_NUMBERS) {
+                ReportedNumbersScreen(locator = locator, onBack = { navController.popBackStack() })
             }
         }
     }
