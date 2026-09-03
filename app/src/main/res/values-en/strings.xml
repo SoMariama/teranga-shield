@@ -102,7 +102,9 @@
     <string name="new_message_recipient">Recipient</string>
     <string name="new_message_body">Message</string>
     <string name="new_message_send">Send</string>
+    <string name="outgoing_message_prefix">You → %1$s</string>
     <string name="contacts_title">Contacts</string>
+    <string name="contacts_search">Search</string>
     <string name="reported_numbers_note">Numbers you\'ve personally reported as a scam after a call or SMS. Not a list shared with other users — that would require a central server, not built yet.</string>
     <string name="reported_numbers_empty">No reports yet.</string>
 </resources>

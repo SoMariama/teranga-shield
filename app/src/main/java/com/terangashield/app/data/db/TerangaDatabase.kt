@@ -14,7 +14,7 @@ import com.terangashield.app.data.db.entity.UserReportEntity
 
 @Database(
     entities = [CallRecordEntity::class, SmsRecordEntity::class, UserReportEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -32,7 +32,12 @@ abstract class TerangaDatabase : RoomDatabase() {
                     context.applicationContext,
                     TerangaDatabase::class.java,
                     "teranga_shield.db",
-                ).build().also { instance = it }
+                )
+                    // Pas encore de vraie migration pendant cette phase de test rapproche :
+                    // un changement de schema reinitialise l'historique local plutot que de
+                    // planter au demarrage.
+                    .fallbackToDestructiveMigration()
+                    .build().also { instance = it }
             }
     }
 }

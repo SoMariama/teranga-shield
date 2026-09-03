@@ -116,7 +116,9 @@
     <string name="new_message_recipient">Destinataire</string>
     <string name="new_message_body">Message</string>
     <string name="new_message_send">Envoyer</string>
+    <string name="outgoing_message_prefix">Vous → %1$s</string>
     <string name="contacts_title">Contacts</string>
+    <string name="contacts_search">Rechercher</string>
     <string name="reported_numbers_note">Numéros que tu as toi-même signalés comme arnaque après un appel ou un SMS. Pas une liste partagée avec d\'autres utilisateurs — ça demanderait un serveur central, pas encore construit.</string>
     <string name="reported_numbers_empty">Aucun signalement pour l\'instant.</string>
 </resources>

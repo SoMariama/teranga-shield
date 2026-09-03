@@ -23,4 +23,6 @@ data class SmsRecordEntity(
     val opened: Boolean,
     val trustedContactNotified: Boolean,
     val userFeedbackWasScam: Boolean? = null,
+    /** Vrai pour un SMS envoyé par l'utilisateur depuis l'app (voir NewMessageScreen) — `sender` porte alors le destinataire. */
+    val isOutgoing: Boolean = false,
 )

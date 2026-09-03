@@ -22,11 +22,15 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -44,8 +48,18 @@ data class DeviceContact(val name: String, val phoneNumber: String)
 @Composable
 fun ContactsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
-    val contacts by produceState(initialValue = emptyList<DeviceContact>()) {
+    val allContacts by produceState(initialValue = emptyList<DeviceContact>()) {
         value = loadContacts(context)
+    }
+    var query by remember { mutableStateOf("") }
+    val filteredContacts = remember(allContacts, query) {
+        if (query.isBlank()) {
+            allContacts
+        } else {
+            allContacts.filter {
+                it.name.contains(query, ignoreCase = true) || it.phoneNumber.contains(query)
+            }
+        }
     }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -55,8 +69,15 @@ fun ContactsScreen(onBack: () -> Unit) {
                     IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) }
                     Text(stringResource(R.string.contacts_title), style = MaterialTheme.typography.titleLarge)
                 }
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    label = { Text(stringResource(R.string.contacts_search)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                )
             }
-            items(contacts, key = { it.phoneNumber }) { contact ->
+            items(filteredContacts, key = { it.phoneNumber }) { contact ->
                 ContactRow(contact = contact, onClick = { placeCall(context, contact.phoneNumber) })
             }
         }

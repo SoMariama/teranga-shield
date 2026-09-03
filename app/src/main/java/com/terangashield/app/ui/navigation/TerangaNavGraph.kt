@@ -143,6 +143,7 @@ fun TerangaNavGraph(locator: ServiceLocator) {
             }
             composable(Destinations.NEW_MESSAGE) {
                 NewMessageScreen(
+                    locator = locator,
                     initialRecipient = "",
                     onSent = { navController.popBackStack() },
                     onBack = { navController.popBackStack() },

@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,13 +30,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
+import com.terangashield.app.ServiceLocator
+import com.terangashield.app.data.db.entity.SmsRecordEntity
+import com.terangashield.app.domain.model.RiskLevel
+import com.terangashield.app.domain.model.SmsRiskReason
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /** Écran minimal de composition d'un SMS sortant. */
 @Composable
-fun NewMessageScreen(initialRecipient: String, onSent: () -> Unit, onBack: () -> Unit) {
+fun NewMessageScreen(locator: ServiceLocator, initialRecipient: String, onSent: () -> Unit, onBack: () -> Unit) {
     var recipient by remember { mutableStateOf(initialRecipient) }
     var body by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -63,7 +71,27 @@ fun NewMessageScreen(initialRecipient: String, onSent: () -> Unit, onBack: () ->
                 onClick = {
                     if (recipient.isNotBlank() && body.isNotBlank()) {
                         sendSms(context, recipient, body)
-                        onSent()
+                        scope.launch {
+                            val language = locator.userPreferencesRepository.language.first()
+                            locator.smsRepository.insert(
+                                SmsRecordEntity(
+                                    sender = recipient,
+                                    isKnownContact = false,
+                                    timestampMillis = System.currentTimeMillis(),
+                                    riskLevel = RiskLevel.SAFE,
+                                    finalScore = 0f,
+                                    reason = SmsRiskReason.NONE,
+                                    detectedLanguage = language,
+                                    bodyExcerpt = body.take(500),
+                                    containsSuspiciousLink = false,
+                                    suspiciousLinkUrl = null,
+                                    opened = true,
+                                    trustedContactNotified = false,
+                                    isOutgoing = true,
+                                ),
+                            )
+                            onSent()
+                        }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

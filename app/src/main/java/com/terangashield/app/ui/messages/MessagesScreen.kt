@@ -47,8 +47,13 @@ fun MessagesScreen(locator: ServiceLocator, onOpenMessage: (Long) -> Unit, onNew
         ) {
             item { Text(stringResource(R.string.messages_title), style = MaterialTheme.typography.headlineMedium) }
             items(messages, key = { it.id }) { sms ->
+                val title = if (sms.isOutgoing) {
+                    stringResource(R.string.outgoing_message_prefix, sms.sender)
+                } else {
+                    sms.sender
+                }
                 ActivityRow(
-                    item = ActivityItem(sms.id, EventType.SMS, sms.sender, sms.timestampMillis, sms.riskLevel),
+                    item = ActivityItem(sms.id, EventType.SMS, title, sms.timestampMillis, sms.riskLevel),
                     onClick = { onOpenMessage(sms.id) },
                 )
             }

@@ -32,13 +32,18 @@ class TerangaInCallService : InCallService() {
 
     override fun onCallAdded(call: Call) {
         super.onCallAdded(call)
-        ensureSessionStarted(call)
+        // Une exception ici ferait planter le service — Telecom coupe alors l'appel faute
+        // d'interface pour l'afficher. On isole donc tout ce qui n'est pas strictement
+        // necessaire pour que l'appel aboutisse malgre tout si un detail annexe echoue.
+        runCatching { ensureSessionStarted(call) }
         CallBridge.setCall(call)
-        startActivity(
-            Intent(this, InCallActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            },
-        )
+        runCatching {
+            startActivity(
+                Intent(this, InCallActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                },
+            )
+        }
     }
 
     override fun onCallRemoved(call: Call) {
@@ -46,7 +51,7 @@ class TerangaInCallService : InCallService() {
         if (CallBridge.call.value === call) {
             CallBridge.setCall(null)
         }
-        persistCallRecord(call)
+        runCatching { persistCallRecord(call) }
     }
 
     override fun onCallAudioStateChanged(audioState: CallAudioState) {

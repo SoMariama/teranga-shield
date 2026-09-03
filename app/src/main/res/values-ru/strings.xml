@@ -102,7 +102,9 @@
     <string name="new_message_recipient">Получатель</string>
     <string name="new_message_body">Сообщение</string>
     <string name="new_message_send">Отправить</string>
+    <string name="outgoing_message_prefix">Вы → %1$s</string>
     <string name="contacts_title">Контакты</string>
+    <string name="contacts_search">Поиск</string>
     <string name="reported_numbers_note">Номера, которые вы сами отметили как мошеннические после звонка или СМС. Это не список, общий с другими пользователями — для этого нужен центральный сервер, который пока не создан.</string>
     <string name="reported_numbers_empty">Пока нет жалоб.</string>
 </resources>

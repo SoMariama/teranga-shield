@@ -87,7 +87,7 @@
             android:name=".ui.incall.InCallActivity"
             android:exported="false"
             android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.TerangaShield" />
 
         <!-- Fournit l'écran d'appel pour le rôle téléphone par défaut (ROLE_DIALER) -->
