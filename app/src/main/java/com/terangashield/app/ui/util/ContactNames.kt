@@ -1,6 +1,7 @@
 package com.terangashield.app.ui.util
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.platform.LocalContext
 import com.terangashield.app.service.call.ContactsLookup
