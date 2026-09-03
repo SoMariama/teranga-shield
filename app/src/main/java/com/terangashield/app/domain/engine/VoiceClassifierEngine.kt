@@ -17,6 +17,11 @@ data class VoiceClassificationResult(
  * Abstraction du classificateur vocal (voix synthétique, débit scripté, bruit de centre d'appel).
  * Implémentation V1 : [com.terangashield.app.domain.engine.mock.MockVoiceClassifierEngine].
  * Le signal est largement indépendant de la langue : un seul modèle pour toutes les langues.
+ *
+ * Non câblée dans le flux d'appel réel actuel ([com.terangashield.app.service.CallAudioAnalysisService]) :
+ * le reconnaisseur vocal système s'approprie le micro pendant l'écoute, donc pas d'accès à
+ * l'audio brut en parallèle pour cette analyse complémentaire. Reste utilisable par le
+ * simulateur de debug et prête à être branchée si un futur moteur STT expose l'audio brut.
  */
 interface VoiceClassifierEngine {
     suspend fun initialize()

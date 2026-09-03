@@ -19,6 +19,7 @@ import com.terangashield.app.domain.engine.mock.MockCascadeFilter
 import com.terangashield.app.domain.engine.mock.MockRiskAnalysisEngine
 import com.terangashield.app.domain.engine.mock.MockSpeechToTextEngine
 import com.terangashield.app.domain.engine.mock.MockVoiceClassifierEngine
+import com.terangashield.app.domain.engine.real.RealSpeechToTextEngine
 import com.terangashield.app.domain.model.DetectionSensitivity
 import com.terangashield.app.domain.patterns.PatternRepository
 import com.terangashield.app.domain.scoring.RiskScorer
@@ -38,7 +39,11 @@ class ServiceLocator private constructor(context: Context) {
     val reportedNumbersIndex = ReportedNumbersIndex(context)
     val reportedNumbersRemoteDataSource: ReportedNumbersRemoteDataSource = NoOpReportedNumbersRemoteDataSource()
 
-    val speechToTextEngine: SpeechToTextEngine = MockSpeechToTextEngine()
+    // Reconnaisseur vocal réel si l'appareil le garantit hors ligne (Android 12+), sinon repli
+    // sur le mock : voir RealSpeechToTextEngine.isAvailable() et CallAudioAnalysisService.
+    private val realSpeechToTextEngine = RealSpeechToTextEngine(context)
+    val speechToTextEngine: SpeechToTextEngine =
+        if (realSpeechToTextEngine.isAvailable()) realSpeechToTextEngine else MockSpeechToTextEngine()
     val riskAnalysisEngine: RiskAnalysisEngine = MockRiskAnalysisEngine(patternRepository)
     val voiceClassifierEngine: VoiceClassifierEngine = MockVoiceClassifierEngine()
     val cascadeFilter: CascadeFilter = MockCascadeFilter()

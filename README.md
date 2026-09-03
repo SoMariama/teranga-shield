@@ -6,16 +6,25 @@ d'origine pour le contexte complet.
 
 ## État de ce scaffold
 
-Ceci est le scaffold V1 tel que cadré avec l'utilisateur : structure complète du projet, UI
-Compose de bout en bout, couche de données Room, `CallScreeningService` + rôle SMS par défaut,
-et les trois moteurs ML (`SpeechToTextEngine`, `RiskAnalysisEngine`, `VoiceClassifierEngine`)
-**branchés sur des implémentations factices** (`domain/engine/mock/`), pas les vrais modèles
-TFLite/ONNX. Voir "Prochaines étapes" plus bas pour l'intégration des vrais modèles.
+Structure complète du projet, UI Compose de bout en bout, couche de données Room,
+`CallScreeningService` + rôle SMS par défaut. Des trois moteurs ML :
 
-Le projet n'a pas pu être compilé dans cet environnement (ni Gradle ni Android SDK installés
-ici) — à ouvrir dans Android Studio pour synchroniser, générer le wrapper Gradle
-(`File > Sync Project`, ou `gradle wrapper` si vous avez Gradle en local) et lancer un premier
-build avant de considérer le scaffold comme validé.
+- **`SpeechToTextEngine`** a une implémentation réelle (`domain/engine/real/RealSpeechToTextEngine`)
+  basée sur le reconnaisseur vocal embarqué d'Android (`SpeechRecognizer.createOnDeviceSpeechRecognizer`),
+  garanti hors-ligne à partir d'Android 12 (API 31) — voir `isAvailable()`. Sur les appareils plus
+  anciens, l'app reste en mode simulation pour les appels plutôt que de risquer un envoi réseau.
+- **`RiskAnalysisEngine`** reste mocké (`MockRiskAnalysisEngine`), mais fait une vraie
+  correspondance de phrases contre `patterns_xx.json` — pas un simple stub vide, voir
+  `PatternMatcher`. Fonctionne pour de vrai sur les SMS (texte pur, pas de dépendance à
+  Android 12+).
+- **`VoiceClassifierEngine`** et **`CascadeFilter`** restent mockés et ne sont plus câblés dans
+  le flux d'appel réel : le reconnaisseur système s'approprie le micro pendant l'écoute, donc
+  plus d'accès à l'audio brut en parallèle pour ces signaux complémentaires.
+
+Compilation vérifiée via GitHub Actions (`.github/workflows/android-build.yml`) — ce PC de
+développement a un bug Windows qui empêche Gradle et Android Studio de fonctionner localement
+(sockets AF_UNIX cassés sur ce build non mis à jour), donc le CI cloud fait office de vérification
+de build principale ; APK debug téléchargeable en artefact à chaque push.
 
 ## Ouvrir le projet
 
@@ -44,8 +53,10 @@ unitairement — voir `app/src/test/`.
 
 ## Ce qui est délibérément hors périmètre de ce scaffold
 
-- **Vrais modèles ML** : `SpeechToTextEngine`/`RiskAnalysisEngine`/`VoiceClassifierEngine` sont
-  mockés. Voir "Prochaines étapes".
+- **NLU par vrai modèle ML** : `RiskAnalysisEngine` reste une correspondance de phrases
+  (`PatternMatcher`), pas un modèle multilingue entraîné. Voir "Prochaines étapes".
+- **Analyse vocale complémentaire** (voix synthétique, débit scripté) : non câblée dans le flux
+  d'appel réel, voir ci-dessus.
 - **`ROLE_DIALER`** : le prompt le mentionne comme optionnel ("éventuellement"). Seuls
   `CallScreeningService` (filtrage) et `ROLE_SMS` (app SMS par défaut) sont implémentés — un
   vrai rôle de numéroteur (UI d'appel complète, `InCallService`) est un chantier séparé bien
@@ -58,21 +69,22 @@ unitairement — voir `app/src/test/`.
   implémentation `NoOp` — aucune URL n'a été inventée, l'intégration réseau reste à définir avec
   le backend.
 
-## Prochaines étapes (intégration des vrais modèles)
+## Prochaines étapes
 
-1. **Transcription** : remplacer `MockSpeechToTextEngine` par une implémentation appelant un
-   Whisper tiny/base quantisé via TensorFlow Lite ou ONNX Runtime Mobile. Décommenter les
-   dépendances TFLite dans `app/build.gradle.kts`.
-2. **NLU** : remplacer `MockRiskAnalysisEngine` par un modèle multilingue quantisé int8 (un seul
-   modèle pour fr/en/ru, voir contrainte de budget). `PatternMatcher`/`patterns_xx.json` peuvent
-   servir de données d'entraînement/calibration.
-3. **Classificateur vocal** : remplacer `MockVoiceClassifierEngine`.
-4. **Cascade filter** : remplacer `MockCascadeFilter` par le vrai modèle très léger de premier
-   filtre.
-5. **Tests sur appareil physique bas/milieu de gamme réel** (pas d'émulateur) dès que le pipeline
-   réel tourne : temps de réponse, batterie sur 30 min, température — voir contrainte de
-   légèreté du prompt produit.
-6. **Base de numéros signalés** : générer `reported_numbers.bloom` (voir
+1. **NLU par vrai modèle ML** : remplacer `MockRiskAnalysisEngine` par un modèle multilingue
+   quantisé int8 (un seul modèle pour fr/en/ru, voir contrainte de budget).
+   `PatternMatcher`/`patterns_xx.json` peuvent servir de données d'entraînement/calibration.
+2. **Téléchargement du modèle de langue on-device** : `SpeechRecognizer` embarqué nécessite que
+   le pack de langue soit installé sur l'appareil (Réglages système Android). Prévoir une
+   détection + invite à l'installer si absent (`RecognizerIntent.ACTION_GET_LANGUAGE_DETAILS` ou
+   orientation vers les réglages système).
+3. **Classificateur vocal / cascade filter** : nécessiteraient un accès simultané au micro en
+   parallèle du reconnaisseur système — à concevoir séparément si ce signal complémentaire est
+   jugé nécessaire (capture `AudioRecord` dédiée, avec les risques de conflit micro que ça
+   implique).
+4. **Tests sur appareil physique bas/milieu de gamme réel** dès que possible : temps de réponse,
+   batterie sur 30 min, température — voir contrainte de légèreté du prompt produit.
+5. **Base de numéros signalés** : générer `reported_numbers.bloom` (voir
    `assets/README_reported_numbers.md`) et brancher un vrai backend de delta sync dans
    `ReportedNumbersRemoteDataSource`.
 
