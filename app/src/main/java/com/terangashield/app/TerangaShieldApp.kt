@@ -27,5 +27,9 @@ class TerangaShieldApp : Application() {
 
         // Mise à jour delta non bloquante, uniquement si une connexion est disponible.
         ReportedNumbersUpdateWorker.schedulePeriodic(this)
+
+        // Historique des SMS déjà présents sur l'appareil : sans ça, l'onglet Messages reste
+        // vide tant qu'aucun nouveau SMS n'arrive après le passage en app par défaut.
+        applicationScope.launch { serviceLocator.smsHistoryImporter.importIfNeeded() }
     }
 }

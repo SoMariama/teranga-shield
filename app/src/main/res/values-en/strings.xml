@@ -98,4 +98,9 @@
     <string name="dialer_title">Keypad</string>
     <string name="dialer_call">Call</string>
     <string name="dialer_backspace">Backspace</string>
+    <string name="new_message_title">New message</string>
+    <string name="new_message_recipient">Recipient</string>
+    <string name="new_message_body">Message</string>
+    <string name="new_message_send">Send</string>
+    <string name="contacts_title">Contacts</string>
 </resources>

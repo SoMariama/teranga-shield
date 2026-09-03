@@ -112,4 +112,9 @@
     <string name="dialer_title">Clavier</string>
     <string name="dialer_call">Appeler</string>
     <string name="dialer_backspace">Effacer</string>
+    <string name="new_message_title">Nouveau message</string>
+    <string name="new_message_recipient">Destinataire</string>
+    <string name="new_message_body">Message</string>
+    <string name="new_message_send">Envoyer</string>
+    <string name="contacts_title">Contacts</string>
 </resources>

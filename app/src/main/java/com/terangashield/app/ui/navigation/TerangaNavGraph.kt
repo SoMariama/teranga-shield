@@ -25,10 +25,12 @@ import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.ui.calls.CallDetailScreen
 import com.terangashield.app.ui.calls.CallsScreen
+import com.terangashield.app.ui.contacts.ContactsScreen
 import com.terangashield.app.ui.dialer.DialerScreen
 import com.terangashield.app.ui.home.HomeScreen
 import com.terangashield.app.ui.messages.MessageDetailScreen
 import com.terangashield.app.ui.messages.MessagesScreen
+import com.terangashield.app.ui.messages.NewMessageScreen
 import com.terangashield.app.ui.onboarding.ConsentScreen
 import com.terangashield.app.ui.onboarding.CountryLanguageScreen
 import com.terangashield.app.ui.onboarding.PermissionsRequestScreen
@@ -115,10 +117,14 @@ fun TerangaNavGraph(locator: ServiceLocator) {
                     locator = locator,
                     onOpenCall = { navController.navigate(Destinations.callDetail(it)) },
                     onOpenDialer = { navController.navigate(Destinations.DIALER) },
+                    onOpenContacts = { navController.navigate(Destinations.CONTACTS) },
                 )
             }
             composable(Destinations.DIALER) {
                 DialerScreen(initialNumber = "", onBack = { navController.popBackStack() })
+            }
+            composable(Destinations.CONTACTS) {
+                ContactsScreen(onBack = { navController.popBackStack() })
             }
             composable(
                 route = Destinations.CALL_DETAIL,
@@ -128,7 +134,18 @@ fun TerangaNavGraph(locator: ServiceLocator) {
                 CallDetailScreen(locator = locator, callId = callId, onBack = { navController.popBackStack() })
             }
             composable(Destinations.MESSAGES) {
-                MessagesScreen(locator = locator, onOpenMessage = { navController.navigate(Destinations.messageDetail(it)) })
+                MessagesScreen(
+                    locator = locator,
+                    onOpenMessage = { navController.navigate(Destinations.messageDetail(it)) },
+                    onNewMessage = { navController.navigate(Destinations.NEW_MESSAGE) },
+                )
+            }
+            composable(Destinations.NEW_MESSAGE) {
+                NewMessageScreen(
+                    initialRecipient = "",
+                    onSent = { navController.popBackStack() },
+                    onBack = { navController.popBackStack() },
+                )
             }
             composable(
                 route = Destinations.MESSAGE_DETAIL,

@@ -1,16 +1,19 @@
 package com.terangashield.app.ui.calls
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Dialpad
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,17 +30,28 @@ import com.terangashield.app.ui.components.ActivityRow
 import com.terangashield.app.ui.model.ActivityItem
 import com.terangashield.app.ui.theme.IndigoNuit
 import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.theme.White
 
 @Composable
-fun CallsScreen(locator: ServiceLocator, onOpenCall: (Long) -> Unit, onOpenDialer: () -> Unit) {
+fun CallsScreen(
+    locator: ServiceLocator,
+    onOpenCall: (Long) -> Unit,
+    onOpenDialer: () -> Unit,
+    onOpenContacts: () -> Unit,
+) {
     val viewModel: CallsViewModel = viewModel(factory = TerangaViewModelFactory(locator))
     val calls by viewModel.calls.collectAsStateWithLifecycle()
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
-            FloatingActionButton(onClick = onOpenDialer, containerColor = OcreTeranga, contentColor = IndigoNuit) {
-                Icon(Icons.Filled.Dialpad, contentDescription = stringResource(R.string.dialer_title))
+            Column(horizontalAlignment = androidx.compose.ui.Alignment.End, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                SmallFloatingActionButton(onClick = onOpenContacts, containerColor = White, contentColor = IndigoNuit) {
+                    Icon(Icons.Filled.Contacts, contentDescription = stringResource(R.string.contacts_title))
+                }
+                FloatingActionButton(onClick = onOpenDialer, containerColor = OcreTeranga, contentColor = IndigoNuit) {
+                    Icon(Icons.Filled.Dialpad, contentDescription = stringResource(R.string.dialer_title))
+                }
             }
         },
     ) { padding ->

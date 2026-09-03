@@ -98,4 +98,9 @@
     <string name="dialer_title">Клавиатура</string>
     <string name="dialer_call">Позвонить</string>
     <string name="dialer_backspace">Стереть</string>
+    <string name="new_message_title">Новое сообщение</string>
+    <string name="new_message_recipient">Получатель</string>
+    <string name="new_message_body">Сообщение</string>
+    <string name="new_message_send">Отправить</string>
+    <string name="contacts_title">Контакты</string>
 </resources>

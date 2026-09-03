@@ -41,6 +41,7 @@ class UserPreferencesRepository(private val context: Context) {
 
         val SPEAKER_REQUIRES_EXPLICIT_CONSENT = booleanPreferencesKey("speaker_requires_explicit_consent")
         val REPORTED_DB_LAST_UPDATE_TS = longPreferencesKey("reported_db_last_update_ts")
+        val SMS_HISTORY_IMPORTED = booleanPreferencesKey("sms_history_imported")
     }
 
     val onboardingComplete: Flow<Boolean> =
@@ -148,4 +149,11 @@ class UserPreferencesRepository(private val context: Context) {
     }
 
     suspend fun currentLanguageBlocking(): AppLanguage = language.first()
+
+    suspend fun isSmsHistoryImported(): Boolean =
+        context.dataStore.data.map { it[Keys.SMS_HISTORY_IMPORTED] ?: false }.first()
+
+    suspend fun setSmsHistoryImported() {
+        context.dataStore.edit { it[Keys.SMS_HISTORY_IMPORTED] = true }
+    }
 }
