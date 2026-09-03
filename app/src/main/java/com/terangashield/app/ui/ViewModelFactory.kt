@@ -30,6 +30,7 @@ class TerangaViewModelFactory(private val locator: ServiceLocator) : ViewModelPr
                 com.terangashield.app.ui.settings.SettingsViewModel(
                     locator.userPreferencesRepository,
                     locator.reportRepository,
+                    locator.scamSimulator,
                 ) as T
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

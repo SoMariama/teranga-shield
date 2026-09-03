@@ -1,6 +1,7 @@
 package com.terangashield.app.ui.settings
 
 import android.text.format.DateFormat
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.terangashield.app.BuildConfig
 import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.domain.model.TrustedContact
@@ -138,6 +140,54 @@ fun SettingsScreen(locator: ServiceLocator, onResetOnboarding: () -> Unit) {
             OutlinedButton(onClick = { viewModel.revokeAllAndResetOnboarding(); onResetOnboarding() }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.settings_manage_default_apps))
             }
+
+            if (BuildConfig.DEBUG) {
+                HorizontalDivider()
+                DebugSimulationSection(viewModel)
+            }
+        }
+    }
+}
+
+/**
+ * Outils de démonstration/QA, uniquement visibles en build debug : rejoue un scénario d'arnaque
+ * (ou un échange anodin) à travers le vrai pipeline mocké, sans dépendre du micro ni d'un appel
+ * téléphonique réel — voir [com.terangashield.app.debug.ScamSimulator].
+ */
+@Composable
+private fun DebugSimulationSection(viewModel: SettingsViewModel) {
+    val context = LocalContext.current
+    fun runAndNotify(label: String, action: () -> Unit) {
+        action()
+        Toast.makeText(context, "$label — voir Accueil / Appels / Messages", Toast.LENGTH_SHORT).show()
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Outils de démonstration (debug)", style = MaterialTheme.typography.titleMedium)
+        Text(
+            "Rejoue un scénario à travers le vrai pipeline de détection (mock), sans micro ni appel réel.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = { runAndNotify("Appel à risque simulé") { viewModel.simulateRiskyCall() } },
+                modifier = Modifier.weight(1f),
+            ) { Text("Appel à risque") }
+            OutlinedButton(
+                onClick = { runAndNotify("Appel sûr simulé") { viewModel.simulateSafeCall() } },
+                modifier = Modifier.weight(1f),
+            ) { Text("Appel sûr") }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = { runAndNotify("SMS à risque simulé") { viewModel.simulateRiskySms() } },
+                modifier = Modifier.weight(1f),
+            ) { Text("SMS à risque") }
+            OutlinedButton(
+                onClick = { runAndNotify("SMS sûr simulé") { viewModel.simulateSafeSms() } },
+                modifier = Modifier.weight(1f),
+            ) { Text("SMS sûr") }
         }
     }
 }

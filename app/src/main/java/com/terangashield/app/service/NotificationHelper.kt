@@ -63,6 +63,7 @@ object NotificationHelper {
             .build()
 
         val manager = context.getSystemService(NotificationManager::class.java)
-        manager?.notify(NOTIFICATION_ID_ALERT, notification)
+        // POST_NOTIFICATIONS (API 33+) peut ne pas être accordée : ne jamais planter une alerte pour ça.
+        runCatching { manager?.notify(NOTIFICATION_ID_ALERT, notification) }
     }
 }

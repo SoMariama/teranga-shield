@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.terangashield.app.data.db.entity.UserReportEntity
 import com.terangashield.app.data.prefs.UserPreferencesRepository
 import com.terangashield.app.data.repository.ReportRepository
+import com.terangashield.app.debug.ScamSimulator
 import com.terangashield.app.domain.model.AppLanguage
 import com.terangashield.app.domain.model.Country
 import com.terangashield.app.domain.model.DetectionSensitivity
@@ -27,6 +28,7 @@ data class SettingsUiState(
 class SettingsViewModel(
     private val prefs: UserPreferencesRepository,
     reportRepository: ReportRepository,
+    private val scamSimulator: ScamSimulator,
 ) : ViewModel() {
 
     private val basePrefs = combine(
@@ -60,4 +62,10 @@ class SettingsViewModel(
     fun setTrustedContact(contact: TrustedContact) = viewModelScope.launch { prefs.setTrustedContact(contact) }
     fun setMicAnalysisEnabled(enabled: Boolean) = viewModelScope.launch { prefs.setMicAnalysisEnabled(enabled) }
     fun revokeAllAndResetOnboarding() = viewModelScope.launch { prefs.revokeAllConsentsAndReset() }
+
+    // Outils de démonstration/QA (builds debug uniquement, voir SettingsScreen) — voir ScamSimulator.
+    fun simulateRiskyCall() = viewModelScope.launch { scamSimulator.simulateRiskyCall() }
+    fun simulateSafeCall() = viewModelScope.launch { scamSimulator.simulateSafeCall() }
+    fun simulateRiskySms() = viewModelScope.launch { scamSimulator.simulateRiskySms() }
+    fun simulateSafeSms() = viewModelScope.launch { scamSimulator.simulateSafeSms() }
 }

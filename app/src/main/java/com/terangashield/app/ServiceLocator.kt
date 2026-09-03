@@ -10,6 +10,7 @@ import com.terangashield.app.data.remote.ReportedNumbersRemoteDataSource
 import com.terangashield.app.data.repository.CallRepository
 import com.terangashield.app.data.repository.ReportRepository
 import com.terangashield.app.data.repository.SmsRepository
+import com.terangashield.app.debug.ScamSimulator
 import com.terangashield.app.domain.engine.CascadeFilter
 import com.terangashield.app.domain.engine.RiskAnalysisEngine
 import com.terangashield.app.domain.engine.SpeechToTextEngine
@@ -50,6 +51,9 @@ class ServiceLocator private constructor(context: Context) {
 
     val riskScorer = RiskScorer(DetectionSensitivity.MEDIUM)
     val smsRiskAnalyzer = SmsRiskAnalyzer(riskAnalysisEngine, DetectionSensitivity.MEDIUM)
+
+    /** Outil de démonstration/QA (builds debug uniquement, voir `SettingsScreen`) : voir [ScamSimulator]. */
+    val scamSimulator = ScamSimulator(context, this)
 
     companion object {
         @Volatile private var instance: ServiceLocator? = null
