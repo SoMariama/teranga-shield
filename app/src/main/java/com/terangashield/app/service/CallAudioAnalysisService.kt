@@ -12,13 +12,12 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
-import com.terangashield.app.data.db.entity.CallRecordEntity
+import com.terangashield.app.domain.engine.SpeechToTextEngine
 import com.terangashield.app.domain.engine.TranscriptionResult
 import com.terangashield.app.domain.engine.VoiceClassificationResult
 import com.terangashield.app.domain.model.AppLanguage
 import com.terangashield.app.domain.model.EventType
 import com.terangashield.app.domain.model.RiskLevel
-import com.terangashield.app.domain.model.ScoreBreakdown
 import com.terangashield.app.domain.scoring.CallScoringInput
 import com.terangashield.app.service.call.CurrentCallSession
 import kotlinx.coroutines.CoroutineScope
@@ -34,15 +33,13 @@ import kotlinx.coroutines.launch
  * activé. Tourne en service au premier plan (obligatoire pour l'accès micro en arrière-plan).
  * Étapes 5 à 10 du flux "Appels" du prompt produit.
  *
- * Le moteur de transcription ([com.terangashield.app.domain.engine.SpeechToTextEngine]) gère
- * lui-même la capture micro (fenêtres glissantes internes au reconnaisseur) ; ce service se
- * contente de démarrer/arrêter l'écoute selon l'état du haut-parleur et de faire suivre chaque
- * résultat au pipeline de score. Il n'y a donc plus de capture audio brute ni de filtre en
- * cascade séparé ici : le reconnaisseur embarqué ne se déclenche déjà que sur de la parole
- * détectée. L'analyse vocale complémentaire (voix synthétique, débit scripté) n'est pas câblée
- * dans ce flux réel — elle exigerait un accès simultané au micro que le reconnaisseur système
- * s'approprie déjà — donc sa contribution reste neutre ici (0) ; seule la démonstration via le
- * simulateur de debug l'illustre.
+ * Le moteur de transcription ([SpeechToTextEngine]) gère lui-même la capture micro (fenêtres
+ * glissantes internes au reconnaisseur) ; ce service se contente de démarrer/arrêter l'écoute
+ * selon l'état du haut-parleur et de faire suivre chaque résultat au pipeline de score. Le
+ * résultat de chaque fenêtre est écrit dans [CurrentCallSession] au fil de l'eau plutôt que
+ * conservé localement : c'est [com.terangashield.app.service.call.TerangaInCallService] qui
+ * enregistre l'appel dans l'historique à la fin, pour TOUS les appels (y compris sortants et
+ * contacts connus, que ce service n'analyse jamais) — voir son commentaire pour le détail.
  */
 class CallAudioAnalysisService : Service() {
 
@@ -50,9 +47,6 @@ class CallAudioAnalysisService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.Default + serviceJob)
 
     private lateinit var locator: ServiceLocator
-    private var lastBreakdown: ScoreBreakdown? = null
-    private var lastTranscriptExcerpt: String? = null
-    private var highestRiskLevel: RiskLevel = RiskLevel.SAFE
 
     override fun onCreate() {
         super.onCreate()
@@ -108,7 +102,7 @@ class CallAudioAnalysisService : Service() {
         }
     }
 
-    private suspend fun listenAndScore(engine: com.terangashield.app.domain.engine.SpeechToTextEngine, language: AppLanguage) {
+    private suspend fun listenAndScore(engine: SpeechToTextEngine, language: AppLanguage) {
         engine.listen(language).collect { result ->
             if (result.isFinal && result.text.isNotBlank()) {
                 processTranscription(result)
@@ -126,18 +120,21 @@ class CallAudioAnalysisService : Service() {
                 detectedLanguage = transcription.detectedLanguage,
             ),
         )
-        lastBreakdown = breakdown
-        lastTranscriptExcerpt = transcription.text.take(TRANSCRIPT_EXCERPT_MAX_CHARS)
-
         val riskLevel = locator.riskScorer.riskLevelFor(breakdown.finalScore)
-        if (riskLevel.ordinal > highestRiskLevel.ordinal) highestRiskLevel = riskLevel
+        CurrentCallSession.updateRiskIfHigher(
+            riskLevel = riskLevel,
+            finalScore = breakdown.finalScore,
+            triggeredCategories = breakdown.triggeredCategories,
+            detectedLanguage = transcription.detectedLanguage,
+            transcriptExcerpt = transcription.text.take(TRANSCRIPT_EXCERPT_MAX_CHARS),
+        )
 
         if (riskLevel == RiskLevel.HIGH && !CurrentCallSession.trustedContactAlreadyNotified) {
-            triggerHighRiskAlert(breakdown)
+            triggerHighRiskAlert(breakdown.finalScore)
         }
     }
 
-    private suspend fun triggerHighRiskAlert(breakdown: ScoreBreakdown) {
+    private suspend fun triggerHighRiskAlert(finalScore: Float) {
         CurrentCallSession.trustedContactAlreadyNotified = true
         NotificationHelper.showHighRiskAlert(
             applicationContext,
@@ -145,7 +142,7 @@ class CallAudioAnalysisService : Service() {
             R.string.alert_high_risk_call_body,
         )
         vibrate()
-        locator.trustedContactNotifier.notifyHighRisk(EventType.CALL, (breakdown.finalScore * 100).toInt())
+        locator.trustedContactNotifier.notifyHighRisk(EventType.CALL, (finalScore * 100).toInt())
     }
 
     private fun vibrate() {
@@ -159,41 +156,9 @@ class CallAudioAnalysisService : Service() {
     }
 
     override fun onDestroy() {
-        persistCallRecord()
         locator.riskAnalysisEngine.release()
         serviceJob.cancel()
-        CurrentCallSession.reset()
         super.onDestroy()
-    }
-
-    private fun persistCallRecord() {
-        val session = CurrentCallSession
-        val phoneNumber = session.phoneNumber ?: return
-        val durationSeconds = if (session.callStartMillis > 0) {
-            ((System.currentTimeMillis() - session.callStartMillis) / 1000).toInt()
-        } else {
-            0
-        }
-        val breakdown = lastBreakdown
-        val finalScore = breakdown?.finalScore ?: 0f
-        val transcript = if (highestRiskLevel == RiskLevel.HIGH) null else lastTranscriptExcerpt
-
-        serviceScope.launch(Dispatchers.IO) {
-            locator.callRepository.insert(
-                CallRecordEntity(
-                    phoneNumber = phoneNumber,
-                    isKnownContact = session.isKnownContact,
-                    timestampMillis = if (session.callStartMillis > 0) session.callStartMillis else System.currentTimeMillis(),
-                    durationSeconds = durationSeconds,
-                    riskLevel = highestRiskLevel,
-                    finalScore = finalScore,
-                    triggeredCategories = breakdown?.triggeredCategories.orEmpty(),
-                    detectedLanguage = breakdown?.detectedLanguage ?: AppLanguage.FRENCH,
-                    transcriptExcerpt = transcript,
-                    trustedContactNotified = session.trustedContactAlreadyNotified,
-                ),
-            )
-        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
