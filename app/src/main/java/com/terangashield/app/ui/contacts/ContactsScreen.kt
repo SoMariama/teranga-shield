@@ -46,7 +46,7 @@ data class DeviceContact(val name: String, val phoneNumber: String)
 
 /** Liste des contacts du téléphone, pour appeler directement — le clavier reste pour les autres numéros. */
 @Composable
-fun ContactsScreen(onBack: () -> Unit) {
+fun ContactsScreen(onBack: () -> Unit, onContactSelected: ((DeviceContact) -> Unit)? = null) {
     val context = LocalContext.current
     val allContacts by produceState(initialValue = emptyList<DeviceContact>()) {
         value = loadContacts(context)
@@ -78,7 +78,12 @@ fun ContactsScreen(onBack: () -> Unit) {
                 )
             }
             items(filteredContacts, key = { it.phoneNumber }) { contact ->
-                ContactRow(contact = contact, onClick = { placeCall(context, contact.phoneNumber) })
+                ContactRow(
+                    contact = contact,
+                    onClick = {
+                        if (onContactSelected != null) onContactSelected(contact) else placeCall(context, contact.phoneNumber)
+                    },
+                )
             }
         }
     }

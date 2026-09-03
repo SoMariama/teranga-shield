@@ -22,11 +22,13 @@ import com.terangashield.app.domain.model.EventType
 import com.terangashield.app.ui.TerangaViewModelFactory
 import com.terangashield.app.ui.components.ActivityRow
 import com.terangashield.app.ui.components.HeroStatusCard
+import com.terangashield.app.ui.util.rememberContactNames
 
 @Composable
 fun HomeScreen(locator: ServiceLocator, onOpenCall: (Long) -> Unit, onOpenMessage: (Long) -> Unit) {
     val viewModel: HomeViewModel = viewModel(factory = TerangaViewModelFactory(locator))
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val contactNames = rememberContactNames(state.recentActivity.map { it.title })
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         LazyColumn(
@@ -53,7 +55,7 @@ fun HomeScreen(locator: ServiceLocator, onOpenCall: (Long) -> Unit, onOpenMessag
             }
             items(state.recentActivity, key = { "${it.type}_${it.id}" }) { activityItem ->
                 ActivityRow(
-                    item = activityItem,
+                    item = activityItem.copy(title = contactNames[activityItem.title] ?: activityItem.title),
                     onClick = {
                         if (activityItem.type == EventType.CALL) onOpenCall(activityItem.id) else onOpenMessage(activityItem.id)
                     },

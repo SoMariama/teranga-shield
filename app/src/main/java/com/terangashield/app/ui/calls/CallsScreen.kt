@@ -31,6 +31,7 @@ import com.terangashield.app.ui.model.ActivityItem
 import com.terangashield.app.ui.theme.IndigoNuit
 import com.terangashield.app.ui.theme.OcreTeranga
 import com.terangashield.app.ui.theme.White
+import com.terangashield.app.ui.util.rememberContactNames
 
 @Composable
 fun CallsScreen(
@@ -41,6 +42,7 @@ fun CallsScreen(
 ) {
     val viewModel: CallsViewModel = viewModel(factory = TerangaViewModelFactory(locator))
     val calls by viewModel.calls.collectAsStateWithLifecycle()
+    val contactNames = rememberContactNames(calls.map { it.phoneNumber })
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -61,8 +63,9 @@ fun CallsScreen(
         ) {
             item { Text(stringResource(R.string.calls_title), style = MaterialTheme.typography.headlineMedium) }
             items(calls, key = { it.id }) { call ->
+                val title = contactNames[call.phoneNumber] ?: call.phoneNumber
                 ActivityRow(
-                    item = ActivityItem(call.id, EventType.CALL, call.phoneNumber, call.timestampMillis, call.riskLevel),
+                    item = ActivityItem(call.id, EventType.CALL, title, call.timestampMillis, call.riskLevel),
                     onClick = { onOpenCall(call.id) },
                 )
             }

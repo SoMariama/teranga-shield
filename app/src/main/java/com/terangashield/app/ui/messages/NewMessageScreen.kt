@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,11 +41,22 @@ import kotlinx.coroutines.launch
 
 /** Écran minimal de composition d'un SMS sortant. */
 @Composable
-fun NewMessageScreen(locator: ServiceLocator, initialRecipient: String, onSent: () -> Unit, onBack: () -> Unit) {
+fun NewMessageScreen(
+    locator: ServiceLocator,
+    initialRecipient: String,
+    pickedNumber: String?,
+    onPickContact: () -> Unit,
+    onSent: () -> Unit,
+    onBack: () -> Unit,
+) {
     var recipient by remember { mutableStateOf(initialRecipient) }
     var body by remember { mutableStateOf("") }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(pickedNumber) {
+        if (!pickedNumber.isNullOrBlank()) recipient = pickedNumber
+    }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -52,13 +65,18 @@ fun NewMessageScreen(locator: ServiceLocator, initialRecipient: String, onSent: 
                 Text(stringResource(R.string.new_message_title), style = MaterialTheme.typography.titleLarge)
             }
 
-            OutlinedTextField(
-                value = recipient,
-                onValueChange = { recipient = it },
-                label = { Text(stringResource(R.string.new_message_recipient)) },
-                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.Phone),
-                modifier = Modifier.fillMaxWidth(),
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(
+                    value = recipient,
+                    onValueChange = { recipient = it },
+                    label = { Text(stringResource(R.string.new_message_recipient)) },
+                    keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    modifier = Modifier.weight(1f),
+                )
+                IconButton(onClick = onPickContact) {
+                    Icon(Icons.Filled.Contacts, contentDescription = stringResource(R.string.contacts_title))
+                }
+            }
             OutlinedTextField(
                 value = body,
                 onValueChange = { body = it },

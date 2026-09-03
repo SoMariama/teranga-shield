@@ -27,11 +27,13 @@ import com.terangashield.app.ui.components.ActivityRow
 import com.terangashield.app.ui.model.ActivityItem
 import com.terangashield.app.ui.theme.IndigoNuit
 import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.util.rememberContactNames
 
 @Composable
 fun MessagesScreen(locator: ServiceLocator, onOpenMessage: (Long) -> Unit, onNewMessage: () -> Unit) {
     val viewModel: MessagesViewModel = viewModel(factory = TerangaViewModelFactory(locator))
     val messages by viewModel.messages.collectAsStateWithLifecycle()
+    val contactNames = rememberContactNames(messages.map { it.sender })
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -47,10 +49,11 @@ fun MessagesScreen(locator: ServiceLocator, onOpenMessage: (Long) -> Unit, onNew
         ) {
             item { Text(stringResource(R.string.messages_title), style = MaterialTheme.typography.headlineMedium) }
             items(messages, key = { it.id }) { sms ->
+                val resolvedSender = contactNames[sms.sender] ?: sms.sender
                 val title = if (sms.isOutgoing) {
-                    stringResource(R.string.outgoing_message_prefix, sms.sender)
+                    stringResource(R.string.outgoing_message_prefix, resolvedSender)
                 } else {
-                    sms.sender
+                    resolvedSender
                 }
                 ActivityRow(
                     item = ActivityItem(sms.id, EventType.SMS, title, sms.timestampMillis, sms.riskLevel),

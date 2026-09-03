@@ -127,6 +127,15 @@ fun TerangaNavGraph(locator: ServiceLocator) {
             composable(Destinations.CONTACTS) {
                 ContactsScreen(onBack = { navController.popBackStack() })
             }
+            composable(Destinations.CONTACTS_PICK) {
+                ContactsScreen(
+                    onBack = { navController.popBackStack() },
+                    onContactSelected = { contact ->
+                        navController.previousBackStackEntry?.savedStateHandle?.set("picked_number", contact.phoneNumber)
+                        navController.popBackStack()
+                    },
+                )
+            }
             composable(
                 route = Destinations.CALL_DETAIL,
                 arguments = listOf(navArgument("callId") { type = androidx.navigation.NavType.LongType }),
@@ -141,10 +150,15 @@ fun TerangaNavGraph(locator: ServiceLocator) {
                     onNewMessage = { navController.navigate(Destinations.NEW_MESSAGE) },
                 )
             }
-            composable(Destinations.NEW_MESSAGE) {
+            composable(Destinations.NEW_MESSAGE) { backStack ->
+                val pickedNumber by backStack.savedStateHandle
+                    .getStateFlow<String?>("picked_number", null)
+                    .collectAsStateWithLifecycle()
                 NewMessageScreen(
                     locator = locator,
                     initialRecipient = "",
+                    pickedNumber = pickedNumber,
+                    onPickContact = { navController.navigate(Destinations.CONTACTS_PICK) },
                     onSent = { navController.popBackStack() },
                     onBack = { navController.popBackStack() },
                 )

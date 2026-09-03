@@ -19,6 +19,7 @@ object Destinations {
     const val SETTINGS = "settings"
     const val DIALER = "dialer"
     const val CONTACTS = "contacts"
+    const val CONTACTS_PICK = "contacts_pick"
     const val NEW_MESSAGE = "new_message"
     const val REPORTED_NUMBERS = "reported_numbers"
 
