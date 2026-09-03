@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Teranga Shield</string>
+
+    <string name="onboarding_welcome_title">Welcome to Teranga Shield</string>
+    <string name="onboarding_welcome_body">Teranga Shield protects you from fraudulent calls and texts, entirely on your phone, with no internet connection required.</string>
+    <string name="onboarding_next">Continue</string>
+    <string name="onboarding_back">Back</string>
+
+    <string name="onboarding_country_title">Your country</string>
+    <string name="onboarding_country_body">We use this to display phone numbers in the right format.</string>
+    <string name="onboarding_language_title">App language</string>
+    <string name="onboarding_language_body">Choose the language of the interface and of detection. It can be different from your country.</string>
+
+    <string name="onboarding_why_title">Why Teranga Shield needs to become your calls and SMS app</string>
+    <string name="onboarding_why_body">To catch a scam as it happens, the app needs to be able to check incoming calls and messages before they reach you. That\'s why Android requires it to become your default calling and messaging app.</string>
+
+    <string name="onboarding_privacy_title">Everything stays on your phone</string>
+    <string name="onboarding_privacy_body">Analysis of calls and messages happens 100%% locally. No conversation is ever sent to a server.</string>
+
+    <string name="onboarding_trusted_contact_title">Your trusted contact</string>
+    <string name="onboarding_trusted_contact_body">If a high risk is detected, this person will receive a text with a risk score — never the content of the conversation.</string>
+    <string name="onboarding_first_name_label">First name</string>
+    <string name="trusted_contact_name_label">Name</string>
+    <string name="trusted_contact_phone_label">Phone number</string>
+
+    <string name="consent_title">Before you continue</string>
+    <string name="consent_default_apps_body">Teranga Shield will become your default calling and messaging app. It checks calls and messages from unknown numbers to detect scams. Nothing is sent over the internet.</string>
+    <string name="consent_mic_title">Audio analysis (microphone)</string>
+    <string name="consent_mic_body">If you turn on speakerphone during a call with an unknown number, Teranga Shield can listen to the conversation to detect a scam, only during that call, only locally on your phone. You can turn this off anytime in Settings.</string>
+    <string name="consent_checkbox_label">I have read and accept these terms</string>
+    <string name="consent_accept">I accept</string>
+    <string name="consent_decline">I do not accept</string>
+
+    <string name="permissions_title">Last step</string>
+    <string name="permissions_body">Android will now ask you to confirm these permissions.</string>
+    <string name="permissions_grant">Continue</string>
+
+    <string name="nav_home">Home</string>
+    <string name="home_greeting">Hello, %1$s</string>
+    <string name="home_protection_active">Protection active</string>
+    <string name="home_calls_blocked_7d">Calls blocked (7 days)</string>
+    <string name="home_sms_filtered_7d">SMS filtered (7 days)</string>
+    <string name="home_recent_activity">Recent activity</string>
+
+    <string name="risk_safe">Safe</string>
+    <string name="risk_medium">Caution</string>
+    <string name="risk_high">High risk</string>
+
+    <string name="calls_title">Calls</string>
+    <string name="call_detail_score">Risk score</string>
+    <string name="call_detail_triggers">Detected elements</string>
+    <string name="call_feedback_question">Was this really a scam?</string>
+    <string name="call_feedback_yes">Yes, a scam</string>
+    <string name="call_feedback_no">No, it was legitimate</string>
+    <string name="category_trust_building">Trust building</string>
+    <string name="category_fabricated_urgency">Fabricated urgency</string>
+    <string name="category_sensitive_info_request">Sensitive info request</string>
+    <string name="category_institution_impersonation">Institution impersonation</string>
+
+    <string name="messages_title">Messages</string>
+    <string name="sms_reason_suspicious_link">Suspicious link</string>
+    <string name="sms_reason_otp_request">Verification code request</string>
+    <string name="sms_reason_brand_impersonation">Likely brand impersonation</string>
+    <string name="sms_link_warning_title">Potentially dangerous link</string>
+    <string name="sms_link_warning_body">This link comes from a message flagged as risky. Do you really want to open it?</string>
+    <string name="sms_link_open_anyway">Open anyway</string>
+    <string name="sms_link_cancel">Cancel</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_country">Country</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_trusted_contact">Trusted contact</string>
+    <string name="settings_sensitivity">Detection sensitivity</string>
+    <string name="sensitivity_low">Low</string>
+    <string name="sensitivity_medium">Medium</string>
+    <string name="sensitivity_high">High</string>
+    <string name="settings_database_status">Reported numbers database</string>
+    <string name="settings_database_last_update">Last updated: %1$s</string>
+    <string name="settings_database_offline_note">Works offline</string>
+    <string name="settings_report_history">Report history</string>
+    <string name="settings_manage_default_apps">Manage default roles</string>
+    <string name="settings_mic_consent_toggle">Audio analysis during calls</string>
+
+    <string name="alert_high_risk_call_title">High risk detected</string>
+    <string name="alert_high_risk_call_body">This call shows signs of a scam. Hang up if you have any doubt.</string>
+    <string name="alert_trusted_contact_notified">Your trusted contact has been notified by SMS.</string>
+</resources>

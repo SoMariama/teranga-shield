@@ -1,0 +1,41 @@
+{
+  "language": "fr",
+  "schemaVersion": 1,
+  "categories": {
+    "TRUST_BUILDING": [
+      { "phrase": "je suis votre conseiller personnel", "weight": 0.35 },
+      { "phrase": "on m'a chargé de m'occuper spécialement de votre dossier", "weight": 0.4 },
+      { "phrase": "vous pouvez me faire confiance, je travaille pour", "weight": 0.4 },
+      { "phrase": "je vous appelle car nous avons remarqué une activité inhabituelle sur votre compte", "weight": 0.45 },
+      { "phrase": "ne vous inquiétez pas, je suis là pour vous aider", "weight": 0.3 }
+    ],
+    "FABRICATED_URGENCY": [
+      { "phrase": "vous devez agir immédiatement sinon votre compte sera bloqué", "weight": 0.6 },
+      { "phrase": "il ne vous reste que quelques minutes pour régulariser la situation", "weight": 0.65 },
+      { "phrase": "si vous ne faites rien maintenant vous allez perdre votre argent", "weight": 0.7 },
+      { "phrase": "c'est urgent, la police va intervenir si vous ne payez pas", "weight": 0.75 },
+      { "phrase": "votre colis sera renvoyé dans l'heure si vous ne confirmez pas", "weight": 0.55 }
+    ],
+    "SENSITIVE_INFO_REQUEST": [
+      { "phrase": "pouvez-vous me donner le code que vous venez de recevoir par SMS", "weight": 0.8 },
+      { "phrase": "j'ai besoin de votre numéro de carte pour vérifier votre identité", "weight": 0.8 },
+      { "phrase": "donnez-moi votre mot de passe pour que je puisse corriger le problème", "weight": 0.85 },
+      { "phrase": "confirmez-moi votre date de naissance et votre numéro de compte", "weight": 0.65 },
+      { "phrase": "quel est le code à 6 chiffres affiché sur votre téléphone", "weight": 0.8 }
+    ],
+    "INSTITUTION_IMPERSONATION": [
+      { "phrase": "je vous appelle de la part de votre banque", "weight": 0.4 },
+      { "phrase": "ici les services des impôts", "weight": 0.45 },
+      { "phrase": "je suis agent de police et j'ai besoin de vérifier votre identité", "weight": 0.55 },
+      { "phrase": "c'est votre opérateur téléphonique, votre ligne va être suspendue", "weight": 0.45 },
+      { "phrase": "nous sommes le service de sécurité de votre banque", "weight": 0.5 }
+    ]
+  },
+  "legitimateContextAllowlist": [
+    { "phrase": "je vous appelle de l'hôpital au sujet de votre proche", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.55 },
+    { "phrase": "c'est le médecin de garde", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.5 },
+    { "phrase": "je suis votre responsable des ressources humaines", "dampens": "TRUST_BUILDING", "dampenFactor": 0.5 },
+    { "phrase": "c'est au sujet de votre entretien d'embauche", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.5 },
+    { "phrase": "je vous appelle de votre agence bancaire habituelle où vous avez un rendez-vous", "dampens": "INSTITUTION_IMPERSONATION", "dampenFactor": 0.6 }
+  ]
+}

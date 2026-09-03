@@ -1,0 +1,41 @@
+{
+  "language": "en",
+  "schemaVersion": 1,
+  "categories": {
+    "TRUST_BUILDING": [
+      { "phrase": "I'm your dedicated account manager", "weight": 0.35 },
+      { "phrase": "I was specifically assigned to handle your case", "weight": 0.4 },
+      { "phrase": "you can trust me, I work for", "weight": 0.4 },
+      { "phrase": "we noticed some unusual activity on your account", "weight": 0.45 },
+      { "phrase": "don't worry, I'm here to help you fix this", "weight": 0.3 }
+    ],
+    "FABRICATED_URGENCY": [
+      { "phrase": "you need to act right now or your account will be suspended", "weight": 0.6 },
+      { "phrase": "you only have a few minutes to resolve this", "weight": 0.65 },
+      { "phrase": "if you don't do this now you will lose your money", "weight": 0.7 },
+      { "phrase": "this is urgent, law enforcement will get involved if you don't pay", "weight": 0.75 },
+      { "phrase": "your package will be returned within the hour unless you confirm", "weight": 0.55 }
+    ],
+    "SENSITIVE_INFO_REQUEST": [
+      { "phrase": "can you read me the code you just received by text", "weight": 0.8 },
+      { "phrase": "I need your card number to verify your identity", "weight": 0.8 },
+      { "phrase": "give me your password so I can fix the issue", "weight": 0.85 },
+      { "phrase": "confirm your date of birth and account number", "weight": 0.65 },
+      { "phrase": "what is the 6 digit code shown on your phone", "weight": 0.8 }
+    ],
+    "INSTITUTION_IMPERSONATION": [
+      { "phrase": "I'm calling on behalf of your bank", "weight": 0.4 },
+      { "phrase": "this is the tax office calling", "weight": 0.45 },
+      { "phrase": "I'm a police officer and I need to verify your identity", "weight": 0.55 },
+      { "phrase": "this is your phone carrier, your line will be suspended", "weight": 0.45 },
+      { "phrase": "we are your bank's security department", "weight": 0.5 }
+    ]
+  },
+  "legitimateContextAllowlist": [
+    { "phrase": "I'm calling from the hospital about your relative", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.55 },
+    { "phrase": "this is the on-call doctor", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.5 },
+    { "phrase": "I'm your HR manager", "dampens": "TRUST_BUILDING", "dampenFactor": 0.5 },
+    { "phrase": "this is about your job interview", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.5 },
+    { "phrase": "I'm calling from your usual branch where you have an appointment", "dampens": "INSTITUTION_IMPERSONATION", "dampenFactor": 0.6 }
+  ]
+}

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Teranga Shield</string>
+
+    <!-- Onboarding : bienvenue -->
+    <string name="onboarding_welcome_title">Bienvenue sur Teranga Shield</string>
+    <string name="onboarding_welcome_body">Teranga Shield vous protège contre les appels et SMS frauduleux, entièrement sur votre téléphone, sans connexion internet obligatoire.</string>
+    <string name="onboarding_next">Continuer</string>
+    <string name="onboarding_back">Retour</string>
+
+    <!-- Onboarding : pays / langue -->
+    <string name="onboarding_country_title">Votre pays</string>
+    <string name="onboarding_country_body">Nous l\'utilisons pour afficher les numéros de téléphone dans le bon format.</string>
+    <string name="onboarding_language_title">Langue de l\'application</string>
+    <string name="onboarding_language_body">Choisissez la langue de l\'interface et de la détection. Elle peut être différente de votre pays.</string>
+
+    <!-- Onboarding : pourquoi les rôles par défaut -->
+    <string name="onboarding_why_title">Pourquoi Teranga Shield doit devenir votre app d\'appels et de SMS</string>
+    <string name="onboarding_why_body">Pour détecter une arnaque au moment où elle arrive, l\'application doit pouvoir examiner les appels et messages entrants avant qu\'ils ne vous atteignent. C\'est pour cela qu\'Android exige qu\'elle devienne votre gestionnaire d\'appels et de SMS par défaut.</string>
+
+    <!-- Onboarding : confidentialité -->
+    <string name="onboarding_privacy_title">Tout reste sur votre téléphone</string>
+    <string name="onboarding_privacy_body">L\'analyse des appels et des messages se fait à 100%% localement. Aucune conversation n\'est envoyée à un serveur, jamais.</string>
+
+    <!-- Onboarding : contact de confiance -->
+    <string name="onboarding_trusted_contact_title">Votre contact de confiance</string>
+    <string name="onboarding_trusted_contact_body">En cas de risque élevé détecté, cette personne recevra un SMS avec un score de risque — jamais le contenu de la conversation.</string>
+    <string name="onboarding_first_name_label">Prénom</string>
+    <string name="trusted_contact_name_label">Nom</string>
+    <string name="trusted_contact_phone_label">Numéro de téléphone</string>
+
+    <!-- Écran de consentement dédié -->
+    <string name="consent_title">Avant de continuer</string>
+    <string name="consent_default_apps_body">Teranga Shield va devenir votre application d\'appels et de SMS par défaut. Elle examine les appels et messages provenant de numéros inconnus pour détecter une arnaque. Rien n\'est envoyé sur internet.</string>
+    <string name="consent_mic_title">Analyse audio (micro)</string>
+    <string name="consent_mic_body">Si vous activez le haut-parleur pendant un appel avec un numéro inconnu, Teranga Shield peut écouter la conversation pour détecter une arnaque, uniquement pendant cet appel, uniquement en local sur votre téléphone. Vous pouvez désactiver cette fonction à tout moment dans les Réglages.</string>
+    <string name="consent_checkbox_label">J\'ai lu et j\'accepte ces conditions</string>
+    <string name="consent_accept">J\'accepte</string>
+    <string name="consent_decline">Je n\'accepte pas</string>
+
+    <!-- Permissions système -->
+    <string name="permissions_title">Dernière étape</string>
+    <string name="permissions_body">Android va maintenant vous demander de confirmer ces autorisations.</string>
+    <string name="permissions_grant">Continuer</string>
+
+    <!-- Accueil -->
+    <string name="nav_home">Accueil</string>
+    <string name="home_greeting">Bonjour, %1$s</string>
+    <string name="home_protection_active">Protection active</string>
+    <string name="home_calls_blocked_7d">Appels bloqués (7 jours)</string>
+    <string name="home_sms_filtered_7d">SMS filtrés (7 jours)</string>
+    <string name="home_recent_activity">Activité récente</string>
+
+    <!-- Risque -->
+    <string name="risk_safe">Sûr</string>
+    <string name="risk_medium">Prudence</string>
+    <string name="risk_high">Risque élevé</string>
+
+    <!-- Appels -->
+    <string name="calls_title">Appels</string>
+    <string name="call_detail_score">Score de risque</string>
+    <string name="call_detail_triggers">Éléments détectés</string>
+    <string name="call_feedback_question">Était-ce réellement une arnaque ?</string>
+    <string name="call_feedback_yes">Oui, une arnaque</string>
+    <string name="call_feedback_no">Non, c\'était légitime</string>
+    <string name="category_trust_building">Mise en confiance</string>
+    <string name="category_fabricated_urgency">Urgence fabriquée</string>
+    <string name="category_sensitive_info_request">Demande d\'information sensible</string>
+    <string name="category_institution_impersonation">Usurpation d\'institution</string>
+
+    <!-- Messages -->
+    <string name="messages_title">Messages</string>
+    <string name="sms_reason_suspicious_link">Lien suspect</string>
+    <string name="sms_reason_otp_request">Demande de code de vérification</string>
+    <string name="sms_reason_brand_impersonation">Usurpation de marque probable</string>
+    <string name="sms_link_warning_title">Lien potentiellement dangereux</string>
+    <string name="sms_link_warning_body">Ce lien provient d\'un message identifié à risque. Voulez-vous vraiment l\'ouvrir ?</string>
+    <string name="sms_link_open_anyway">Ouvrir quand même</string>
+    <string name="sms_link_cancel">Annuler</string>
+
+    <!-- Réglages -->
+    <string name="settings_title">Réglages</string>
+    <string name="settings_country">Pays</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_trusted_contact">Contact de confiance</string>
+    <string name="settings_sensitivity">Sensibilité de détection</string>
+    <string name="sensitivity_low">Faible</string>
+    <string name="sensitivity_medium">Moyenne</string>
+    <string name="sensitivity_high">Élevée</string>
+    <string name="settings_database_status">Base de numéros signalés</string>
+    <string name="settings_database_last_update">Dernière mise à jour : %1$s</string>
+    <string name="settings_database_offline_note">Fonctionne hors connexion</string>
+    <string name="settings_report_history">Historique des signalements</string>
+    <string name="settings_manage_default_apps">Gérer les rôles par défaut</string>
+    <string name="settings_mic_consent_toggle">Analyse audio pendant les appels</string>
+
+    <!-- Alertes -->
+    <string name="alert_high_risk_call_title">Risque élevé détecté</string>
+    <string name="alert_high_risk_call_body">Cet appel présente des signes d\'arnaque. Raccrochez si vous avez un doute.</string>
+    <string name="alert_trusted_contact_notified">Votre contact de confiance a été alerté par SMS.</string>
+</resources>

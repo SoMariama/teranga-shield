@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Teranga Shield</string>
+
+    <string name="onboarding_welcome_title">Добро пожаловать в Teranga Shield</string>
+    <string name="onboarding_welcome_body">Teranga Shield защищает вас от мошеннических звонков и сообщений полностью на вашем телефоне, без обязательного подключения к интернету.</string>
+    <string name="onboarding_next">Продолжить</string>
+    <string name="onboarding_back">Назад</string>
+
+    <string name="onboarding_country_title">Ваша страна</string>
+    <string name="onboarding_country_body">Это нужно, чтобы показывать номера телефонов в правильном формате.</string>
+    <string name="onboarding_language_title">Язык приложения</string>
+    <string name="onboarding_language_body">Выберите язык интерфейса и обнаружения. Он может отличаться от вашей страны.</string>
+
+    <string name="onboarding_why_title">Почему Teranga Shield должен стать вашим приложением для звонков и СМС</string>
+    <string name="onboarding_why_body">Чтобы распознать мошенничество в момент его совершения, приложению нужно проверять входящие звонки и сообщения до того, как они дойдут до вас. Поэтому Android требует сделать его приложением по умолчанию для звонков и СМС.</string>
+
+    <string name="onboarding_privacy_title">Всё остаётся на вашем телефоне</string>
+    <string name="onboarding_privacy_body">Анализ звонков и сообщений происходит на 100%% локально. Ни один разговор никогда не отправляется на сервер.</string>
+
+    <string name="onboarding_trusted_contact_title">Ваш доверенный контакт</string>
+    <string name="onboarding_trusted_contact_body">Если будет обнаружен высокий риск, этот человек получит СМС с оценкой риска — но никогда содержание разговора.</string>
+    <string name="onboarding_first_name_label">Имя</string>
+    <string name="trusted_contact_name_label">Имя контакта</string>
+    <string name="trusted_contact_phone_label">Номер телефона</string>
+
+    <string name="consent_title">Прежде чем продолжить</string>
+    <string name="consent_default_apps_body">Teranga Shield станет вашим приложением по умолчанию для звонков и СМС. Оно проверяет звонки и сообщения с неизвестных номеров для обнаружения мошенничества. Ничего не отправляется в интернет.</string>
+    <string name="consent_mic_title">Анализ звука (микрофон)</string>
+    <string name="consent_mic_body">Если вы включите громкую связь во время звонка с неизвестного номера, Teranga Shield сможет прослушивать разговор для обнаружения мошенничества — только во время этого звонка и только локально на вашем телефоне. Вы можете отключить это в любой момент в настройках.</string>
+    <string name="consent_checkbox_label">Я прочитал(а) и принимаю эти условия</string>
+    <string name="consent_accept">Принимаю</string>
+    <string name="consent_decline">Не принимаю</string>
+
+    <string name="permissions_title">Последний шаг</string>
+    <string name="permissions_body">Сейчас Android попросит вас подтвердить эти разрешения.</string>
+    <string name="permissions_grant">Продолжить</string>
+
+    <string name="nav_home">Главная</string>
+    <string name="home_greeting">Здравствуйте, %1$s</string>
+    <string name="home_protection_active">Защита активна</string>
+    <string name="home_calls_blocked_7d">Заблокировано звонков (7 дней)</string>
+    <string name="home_sms_filtered_7d">Отфильтровано СМС (7 дней)</string>
+    <string name="home_recent_activity">Недавние события</string>
+
+    <string name="risk_safe">Безопасно</string>
+    <string name="risk_medium">Осторожно</string>
+    <string name="risk_high">Высокий риск</string>
+
+    <string name="calls_title">Звонки</string>
+    <string name="call_detail_score">Оценка риска</string>
+    <string name="call_detail_triggers">Обнаруженные признаки</string>
+    <string name="call_feedback_question">Это действительно было мошенничество?</string>
+    <string name="call_feedback_yes">Да, мошенничество</string>
+    <string name="call_feedback_no">Нет, это было законно</string>
+    <string name="category_trust_building">Установление доверия</string>
+    <string name="category_fabricated_urgency">Искусственная срочность</string>
+    <string name="category_sensitive_info_request">Запрос конфиденциальных данных</string>
+    <string name="category_institution_impersonation">Имитация учреждения</string>
+
+    <string name="messages_title">Сообщения</string>
+    <string name="sms_reason_suspicious_link">Подозрительная ссылка</string>
+    <string name="sms_reason_otp_request">Запрос кода подтверждения</string>
+    <string name="sms_reason_brand_impersonation">Вероятная имитация бренда</string>
+    <string name="sms_link_warning_title">Потенциально опасная ссылка</string>
+    <string name="sms_link_warning_body">Эта ссылка из сообщения, отмеченного как рискованное. Вы действительно хотите открыть её?</string>
+    <string name="sms_link_open_anyway">Всё равно открыть</string>
+    <string name="sms_link_cancel">Отмена</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_country">Страна</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_trusted_contact">Доверенный контакт</string>
+    <string name="settings_sensitivity">Чувствительность обнаружения</string>
+    <string name="sensitivity_low">Низкая</string>
+    <string name="sensitivity_medium">Средняя</string>
+    <string name="sensitivity_high">Высокая</string>
+    <string name="settings_database_status">База отмеченных номеров</string>
+    <string name="settings_database_last_update">Последнее обновление: %1$s</string>
+    <string name="settings_database_offline_note">Работает без подключения</string>
+    <string name="settings_report_history">История жалоб</string>
+    <string name="settings_manage_default_apps">Управление ролями по умолчанию</string>
+    <string name="settings_mic_consent_toggle">Анализ звука во время звонков</string>
+
+    <string name="alert_high_risk_call_title">Обнаружен высокий риск</string>
+    <string name="alert_high_risk_call_body">Этот звонок имеет признаки мошенничества. Повесьте трубку, если сомневаетесь.</string>
+    <string name="alert_trusted_contact_notified">Ваш доверенный контакт был уведомлён по СМС.</string>
+</resources>

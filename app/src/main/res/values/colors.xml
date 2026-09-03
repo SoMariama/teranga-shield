@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Palette de marque -->
+    <color name="indigo_nuit">#1E2A44</color>
+    <color name="ocre_teranga">#D9A441</color>
+    <color name="sable_clair">#F6F3EC</color>
+
+    <!-- Risque élevé -->
+    <color name="risk_high_bg">#F4D9CF</color>
+    <color name="risk_high_fg">#B8442C</color>
+    <!-- Prudence -->
+    <color name="risk_medium_bg">#F3E3C6</color>
+    <color name="risk_medium_fg">#8A5A0E</color>
+    <!-- Sûr -->
+    <color name="risk_safe_bg">#DCEEE3</color>
+    <color name="risk_safe_fg">#1F4B36</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="ink">#1A1A1A</color>
+</resources>
