@@ -37,11 +37,17 @@ jobs:
         if: failure()
         shell: bash
         run: |
-          tail -n 80 build_output.log > tail.log || true
+          {
+            grep -n '^e: ' build_output.log || true
+            grep -n -A 6 'What went wrong' build_output.log || true
+          } | head -n 18 > summary.log
+          if [ ! -s summary.log ]; then
+            tail -n 15 build_output.log > summary.log
+          fi
           while IFS= read -r line; do
             esc=$(printf '%s' "$line" | sed 's/%/%25/g')
             echo "::error::${esc}"
-          done < tail.log
+          done < summary.log
 
       - name: Upload full build log
         if: always()
