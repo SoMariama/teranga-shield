@@ -85,4 +85,17 @@
     <string name="alert_high_risk_call_title">Обнаружен высокий риск</string>
     <string name="alert_high_risk_call_body">Этот звонок имеет признаки мошенничества. Повесьте трубку, если сомневаетесь.</string>
     <string name="alert_trusted_contact_notified">Ваш доверенный контакт был уведомлён по СМС.</string>
+
+    <string name="incall_reported_number">Отмеченный номер</string>
+    <string name="incall_known_contact">Известный контакт</string>
+    <string name="incall_incoming_label">Входящий звонок</string>
+    <string name="incall_connecting">Соединение…</string>
+    <string name="incall_answer">Ответить</string>
+    <string name="incall_decline">Отклонить</string>
+    <string name="incall_hangup">Завершить</string>
+    <string name="incall_mute">Без звука</string>
+    <string name="incall_speaker">Громкая связь</string>
+    <string name="dialer_title">Клавиатура</string>
+    <string name="dialer_call">Позвонить</string>
+    <string name="dialer_backspace">Стереть</string>
 </resources>

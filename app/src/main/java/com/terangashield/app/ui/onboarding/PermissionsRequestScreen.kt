@@ -30,14 +30,16 @@ import com.terangashield.app.ui.TerangaViewModelFactory
 
 private const val STEP_SMS_ROLE = 0
 private const val STEP_CALL_ROLE = 1
-private const val STEP_RUNTIME_PERMISSIONS = 2
-private const val STEP_DONE = 3
+private const val STEP_DIALER_ROLE = 2
+private const val STEP_RUNTIME_PERMISSIONS = 3
+private const val STEP_DONE = 4
 
 private val RUNTIME_PERMISSIONS = buildList {
     add(android.Manifest.permission.RECORD_AUDIO)
     add(android.Manifest.permission.READ_CONTACTS)
     add(android.Manifest.permission.READ_PHONE_STATE)
     add(android.Manifest.permission.READ_CALL_LOG)
+    add(android.Manifest.permission.CALL_PHONE)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         add(android.Manifest.permission.POST_NOTIFICATIONS)
     }
@@ -77,15 +79,23 @@ fun PermissionsRequestScreen(locator: ServiceLocator, onFinish: () -> Unit) {
     }
 
     fun requestRole(role: String) {
-        if (roleManager != null && roleManager.isRoleAvailable(role) && !roleManager.isRoleHeld(role)) {
-            roleLauncher.launch(roleManager.createRequestRoleIntent(role))
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            // Pré-Android 10 : pas d'API RoleManager, on oriente vers les réglages système.
-            runCatching {
-                roleLauncher.launch(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
-            }.onFailure { step += 1 }
-        } else {
-            step += 1
+        when {
+            roleManager != null && roleManager.isRoleHeld(role) -> {
+                // Déjà accordé (ex. sélectionné manuellement lors d'un essai précédent).
+                step += 1
+            }
+            roleManager != null && roleManager.isRoleAvailable(role) -> {
+                roleLauncher.launch(roleManager.createRequestRoleIntent(role))
+            }
+            else -> {
+                // API RoleManager indisponible ou rôle non proposable automatiquement sur cet
+                // appareil (observé sur certains OEM) : on oriente vers les réglages système
+                // pour une sélection manuelle, plutôt que de continuer silencieusement sans le
+                // rôle — voir le retour utilisateur qui a dû l'activer à la main.
+                runCatching {
+                    roleLauncher.launch(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
+                }.onFailure { step += 1 }
+            }
         }
     }
 
@@ -102,6 +112,7 @@ fun PermissionsRequestScreen(locator: ServiceLocator, onFinish: () -> Unit) {
                     when (step) {
                         STEP_SMS_ROLE -> requestRole(RoleManager.ROLE_SMS)
                         STEP_CALL_ROLE -> requestRole(RoleManager.ROLE_CALL_SCREENING)
+                        STEP_DIALER_ROLE -> requestRole(RoleManager.ROLE_DIALER)
                         STEP_RUNTIME_PERMISSIONS -> permissionsLauncher.launch(RUNTIME_PERMISSIONS)
                         else -> Unit
                     }

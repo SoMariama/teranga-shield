@@ -25,6 +25,7 @@ import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.ui.calls.CallDetailScreen
 import com.terangashield.app.ui.calls.CallsScreen
+import com.terangashield.app.ui.dialer.DialerScreen
 import com.terangashield.app.ui.home.HomeScreen
 import com.terangashield.app.ui.messages.MessageDetailScreen
 import com.terangashield.app.ui.messages.MessagesScreen
@@ -110,7 +111,14 @@ fun TerangaNavGraph(locator: ServiceLocator) {
                 )
             }
             composable(Destinations.CALLS) {
-                CallsScreen(locator = locator, onOpenCall = { navController.navigate(Destinations.callDetail(it)) })
+                CallsScreen(
+                    locator = locator,
+                    onOpenCall = { navController.navigate(Destinations.callDetail(it)) },
+                    onOpenDialer = { navController.navigate(Destinations.DIALER) },
+                )
+            }
+            composable(Destinations.DIALER) {
+                DialerScreen(initialNumber = "", onBack = { navController.popBackStack() })
             }
             composable(
                 route = Destinations.CALL_DETAIL,

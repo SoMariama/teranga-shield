@@ -10,9 +10,10 @@
         </intent>
     </queries>
 
-    <!-- Rôle gestionnaire d'appels (filtrage) -->
+    <!-- Rôle gestionnaire d'appels (filtrage) et téléphone par défaut (numéroteur) -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <!-- Rôle gestionnaire SMS par défaut -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -68,7 +69,37 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <!-- Requis pour être sélectionnable comme téléphone par défaut (ROLE_DIALER) : point
+                 d'entrée du clavier numérique. -->
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="tel" />
+            </intent-filter>
         </activity>
+
+        <!-- Écran d'appel (entrant / en cours), lancé par TerangaInCallService -->
+        <activity
+            android:name=".ui.incall.InCallActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.TerangaShield" />
+
+        <!-- Fournit l'écran d'appel pour le rôle téléphone par défaut (ROLE_DIALER) -->
+        <service
+            android:name=".service.call.TerangaInCallService"
+            android:exported="true"
+            android:permission="android.permission.BIND_INCALL_SERVICE">
+            <meta-data android:name="android.telecom.IN_CALL_SERVICE_UI" android:value="true" />
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+        </service>
 
         <!-- Filtrage d'appels entrants avant la sonnerie -->
         <service

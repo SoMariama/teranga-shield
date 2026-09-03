@@ -98,4 +98,18 @@
     <string name="alert_high_risk_call_title">Risque élevé détecté</string>
     <string name="alert_high_risk_call_body">Cet appel présente des signes d\'arnaque. Raccrochez si vous avez un doute.</string>
     <string name="alert_trusted_contact_notified">Votre contact de confiance a été alerté par SMS.</string>
+
+    <!-- Écran d'appel (téléphone par défaut) -->
+    <string name="incall_reported_number">Numéro signalé</string>
+    <string name="incall_known_contact">Contact connu</string>
+    <string name="incall_incoming_label">Appel entrant</string>
+    <string name="incall_connecting">Connexion…</string>
+    <string name="incall_answer">Décrocher</string>
+    <string name="incall_decline">Refuser</string>
+    <string name="incall_hangup">Raccrocher</string>
+    <string name="incall_mute">Muet</string>
+    <string name="incall_speaker">Haut-parleur</string>
+    <string name="dialer_title">Clavier</string>
+    <string name="dialer_call">Appeler</string>
+    <string name="dialer_backspace">Effacer</string>
 </resources>

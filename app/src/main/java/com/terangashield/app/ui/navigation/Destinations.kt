@@ -17,6 +17,7 @@ object Destinations {
     const val MESSAGE_DETAIL = "message_detail/{messageId}"
     fun messageDetail(id: Long) = "message_detail/$id"
     const val SETTINGS = "settings"
+    const val DIALER = "dialer"
 
     val bottomBarRoutes = listOf(HOME, CALLS, MESSAGES, SETTINGS)
 }

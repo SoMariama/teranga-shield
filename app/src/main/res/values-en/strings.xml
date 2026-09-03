@@ -85,4 +85,17 @@
     <string name="alert_high_risk_call_title">High risk detected</string>
     <string name="alert_high_risk_call_body">This call shows signs of a scam. Hang up if you have any doubt.</string>
     <string name="alert_trusted_contact_notified">Your trusted contact has been notified by SMS.</string>
+
+    <string name="incall_reported_number">Reported number</string>
+    <string name="incall_known_contact">Known contact</string>
+    <string name="incall_incoming_label">Incoming call</string>
+    <string name="incall_connecting">Connecting…</string>
+    <string name="incall_answer">Answer</string>
+    <string name="incall_decline">Decline</string>
+    <string name="incall_hangup">Hang up</string>
+    <string name="incall_mute">Mute</string>
+    <string name="incall_speaker">Speaker</string>
+    <string name="dialer_title">Keypad</string>
+    <string name="dialer_call">Call</string>
+    <string name="dialer_backspace">Backspace</string>
 </resources>
