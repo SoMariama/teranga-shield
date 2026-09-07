@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.domain.model.TrustedContact
-import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.theme.AccentTeranga
 import com.terangashield.app.ui.theme.White
 
 @Composable
@@ -34,7 +34,7 @@ fun TrustedContactRow(contact: TrustedContact?, onClick: () -> Unit, modifier: M
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
-            modifier = Modifier.size(44.dp).background(OcreTeranga, CircleShape),
+            modifier = Modifier.size(44.dp).background(AccentTeranga, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Text(

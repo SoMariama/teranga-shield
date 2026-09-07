@@ -5,22 +5,25 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 /**
- * Palette validée pour Teranga Shield : chaleureuse et accessible plutôt que "sécurité
- * informatique" austère. Un seul thème clair est défini — pas de dégradés, pas de glassmorphism.
+ * Palette "Modernist" (direction retenue du design system, voir Teranga Shield.dc.html) : un seul
+ * accent rouge-orangé (#EC3013) sur encre quasi noire et fond gris clair, angles à zéro, filets de
+ * 2px au lieu d'ombres/élévation. Remplace la précédente palette Indigo/Ocre comme thème principal.
  */
 private val TerangaColorScheme = lightColorScheme(
-    primary = OcreTeranga,
-    onPrimary = IndigoNuit,
-    secondary = IndigoNuit,
+    primary = AccentTeranga,
+    onPrimary = White,
+    secondary = InkModernist,
     onSecondary = White,
-    background = SableClair,
-    onBackground = Ink,
+    background = SurfaceAppBg,
+    onBackground = InkModernist,
     surface = White,
-    onSurface = Ink,
-    surfaceVariant = SableClair,
-    onSurfaceVariant = InkMuted,
-    error = RiskHighFg,
-    errorContainer = RiskHighBg,
+    onSurface = InkModernist,
+    surfaceVariant = SurfaceAlt,
+    onSurfaceVariant = GreyMuted,
+    outline = GreyBorder,
+    error = AccentTerangaDark,
+    errorContainer = AccentTerangaSoftBg,
+    onErrorContainer = AccentTerangaDark,
 )
 
 @Composable
@@ -30,6 +33,7 @@ fun TerangaShieldTheme(
     MaterialTheme(
         colorScheme = TerangaColorScheme,
         typography = TerangaTypography,
+        shapes = TerangaShapes,
         content = content,
     )
 }

@@ -35,7 +35,7 @@ import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.domain.model.SmsRiskReason
 import com.terangashield.app.ui.TerangaViewModelFactory
-import com.terangashield.app.ui.theme.riskColors
+import com.terangashield.app.ui.theme.riskTextColor
 
 @Composable
 fun MessageDetailScreen(locator: ServiceLocator, messageId: Long, onBack: () -> Unit) {
@@ -55,16 +55,15 @@ fun MessageDetailScreen(locator: ServiceLocator, messageId: Long, onBack: () -> 
             }
 
             val record = message ?: return@Column
-            val colors = riskColors(record.riskLevel)
 
             Text(
                 "${(record.finalScore * 100).toInt()}%",
                 style = MaterialTheme.typography.headlineLarge,
-                color = colors.foreground,
+                color = riskTextColor(record.riskLevel),
             )
 
             if (record.reason != SmsRiskReason.NONE) {
-                Text(reasonLabel(record.reason), style = MaterialTheme.typography.titleMedium, color = colors.foreground)
+                Text(reasonLabel(record.reason), style = MaterialTheme.typography.titleMedium, color = riskTextColor(record.riskLevel))
             }
 
             if (!record.bodyExcerpt.isNullOrBlank()) {

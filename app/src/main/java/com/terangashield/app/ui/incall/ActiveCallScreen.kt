@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material.icons.filled.Mic
@@ -37,10 +36,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
-import com.terangashield.app.ui.theme.OcreTeranga
-import com.terangashield.app.ui.theme.IndigoNuit
-import com.terangashield.app.ui.theme.RiskHighBg
-import com.terangashield.app.ui.theme.RiskHighFg
+import com.terangashield.app.ui.theme.AccentTeranga
+import com.terangashield.app.ui.theme.AccentTerangaDark
+import com.terangashield.app.ui.theme.SurfaceDark
+import com.terangashield.app.ui.theme.SurfaceDarkCard
 import com.terangashield.app.ui.theme.White
 import kotlinx.coroutines.delay
 
@@ -67,7 +66,7 @@ fun ActiveCallScreen(
         }
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = IndigoNuit) {
+    Surface(modifier = Modifier.fillMaxSize(), color = SurfaceDark) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -97,18 +96,19 @@ fun ActiveCallScreen(
                         modifier = Modifier
                             .padding(top = 24.dp)
                             .fillMaxWidth()
-                            .background(RiskHighBg, RoundedCornerShape(16.dp))
+                            .background(SurfaceDarkCard)
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
                             stringResource(R.string.incall_speaker_prompt),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = RiskHighFg,
+                            color = White.copy(alpha = 0.85f),
                         )
                         Button(
                             onClick = onToggleSpeaker,
-                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = OcreTeranga, contentColor = IndigoNuit),
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = AccentTeranga, contentColor = White),
+                            shape = androidx.compose.foundation.shape.RectangleShape,
                             modifier = Modifier.padding(top = 10.dp),
                         ) {
                             Text(stringResource(R.string.incall_speaker_prompt_action))
@@ -137,7 +137,7 @@ fun ActiveCallScreen(
 
             CallActionButton(
                 icon = Icons.Filled.CallEnd,
-                background = RiskHighFg,
+                background = AccentTerangaDark,
                 contentDescription = stringResource(R.string.incall_hangup),
                 onClick = onHangup,
             )
@@ -159,7 +159,7 @@ private fun ToggleCallButton(
         contentAlignment = Alignment.Center,
     ) {
         IconButton(onClick = onClick) {
-            Icon(icon, contentDescription = contentDescription, tint = if (active) IndigoNuit else White)
+            Icon(icon, contentDescription = contentDescription, tint = if (active) SurfaceDark else White)
         }
     }
 }

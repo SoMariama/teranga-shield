@@ -1,5 +1,6 @@
 package com.terangashield.app.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
 import com.terangashield.app.domain.model.EventType
 import com.terangashield.app.domain.model.RiskLevel
 import com.terangashield.app.ui.model.ActivityItem
+import com.terangashield.app.ui.theme.riskColors
 import com.terangashield.app.ui.util.relativeTimestamp
+import java.util.Locale
 
 @Composable
 fun ActivityRow(item: ActivityItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -46,17 +50,21 @@ fun ActivityRow(item: ActivityItem, onClick: () -> Unit, modifier: Modifier = Mo
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        val colors = riskColors(item.riskLevel)
         Text(
-            text = riskLabel(item.riskLevel),
-            style = MaterialTheme.typography.labelLarge,
-            color = com.terangashield.app.ui.theme.riskColors(item.riskLevel).foreground,
+            text = riskLabel(item.riskLevel).uppercase(Locale.getDefault()),
+            style = MaterialTheme.typography.labelMedium,
+            color = colors.foreground,
+            modifier = Modifier
+                .background(colors.background)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
         )
     }
 }
 
 @Composable
 private fun riskLabel(level: RiskLevel): String = when (level) {
-    RiskLevel.SAFE -> androidx.compose.ui.res.stringResource(R.string.risk_safe)
-    RiskLevel.CAUTION -> androidx.compose.ui.res.stringResource(R.string.risk_medium)
-    RiskLevel.HIGH -> androidx.compose.ui.res.stringResource(R.string.risk_high)
+    RiskLevel.SAFE -> stringResource(R.string.risk_safe)
+    RiskLevel.CAUTION -> stringResource(R.string.risk_medium)
+    RiskLevel.HIGH -> stringResource(R.string.risk_high)
 }

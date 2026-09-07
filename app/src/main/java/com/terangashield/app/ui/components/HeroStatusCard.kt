@@ -6,20 +6,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.terangashield.app.ui.theme.IndigoNuit
-import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.theme.AccentTeranga
 import com.terangashield.app.ui.theme.White
 
-/** Carte héro sombre avec un grand chiffre et une barre de progression fine — pas de graphique complexe. */
+/** Bandeau héro plein accent avec un grand chiffre — direction "Modernist", angles à zéro. */
 @Composable
 fun HeroStatusCard(
     statusTitle: String,
@@ -30,10 +29,18 @@ fun HeroStatusCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(IndigoNuit, RoundedCornerShape(24.dp))
+            .background(AccentTeranga)
             .padding(24.dp),
     ) {
-        Text(statusTitle, style = MaterialTheme.typography.titleMedium, color = White)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            androidx.compose.foundation.layout.Box(modifier = Modifier.size(9.dp).background(White))
+            Text(
+                statusTitle.uppercase(java.util.Locale.getDefault()),
+                style = MaterialTheme.typography.labelMedium,
+                color = White,
+                modifier = Modifier.padding(start = 10.dp),
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -45,10 +52,10 @@ fun HeroStatusCard(
                     Text(
                         value.toString(),
                         style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = OcreTeranga,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = White,
                     )
-                    Text(label, style = MaterialTheme.typography.bodyMedium, color = White.copy(alpha = 0.8f))
+                    Text(label, style = MaterialTheme.typography.bodyMedium, color = White.copy(alpha = 0.9f))
                 }
             }
         }
@@ -57,8 +64,8 @@ fun HeroStatusCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp),
-            color = OcreTeranga,
-            trackColor = Color.White.copy(alpha = 0.15f),
+            color = White,
+            trackColor = White.copy(alpha = 0.25f),
         )
     }
 }

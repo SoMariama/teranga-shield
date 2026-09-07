@@ -37,7 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
-import com.terangashield.app.ui.theme.IndigoNuit
+import com.terangashield.app.ui.theme.InkModernist
 import com.terangashield.app.ui.theme.White
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -100,7 +100,7 @@ private fun ContactRow(contact: DeviceContact, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Box(
-            modifier = Modifier.size(38.dp).background(IndigoNuit, CircleShape),
+            modifier = Modifier.size(38.dp).background(InkModernist, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Text(

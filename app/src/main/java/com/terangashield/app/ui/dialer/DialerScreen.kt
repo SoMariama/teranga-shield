@@ -36,8 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.terangashield.app.R
-import com.terangashield.app.ui.theme.IndigoNuit
-import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.theme.AccentTeranga
 import com.terangashield.app.ui.theme.White
 
 /** Clavier numérique minimal pour passer un appel sortant via l'app devenue téléphone par défaut. */
@@ -89,8 +88,8 @@ fun DialerScreen(initialNumber: String, onBack: () -> Unit) {
                     onClick = {
                         if (number.isNotBlank()) placeCall(context, number)
                     },
-                    containerColor = OcreTeranga,
-                    contentColor = IndigoNuit,
+                    containerColor = AccentTeranga,
+                    contentColor = White,
                 ) { Icon(Icons.Filled.Call, contentDescription = stringResource(R.string.dialer_call)) }
                 if (number.isNotEmpty()) {
                     IconButton(onClick = { number = number.dropLast(1) }) {

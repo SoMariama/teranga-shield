@@ -25,8 +25,8 @@ import com.terangashield.app.domain.model.EventType
 import com.terangashield.app.ui.TerangaViewModelFactory
 import com.terangashield.app.ui.components.ActivityRow
 import com.terangashield.app.ui.model.ActivityItem
-import com.terangashield.app.ui.theme.IndigoNuit
-import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.theme.AccentTeranga
+import com.terangashield.app.ui.theme.White
 import com.terangashield.app.ui.util.rememberContactNames
 
 @Composable
@@ -38,7 +38,7 @@ fun MessagesScreen(locator: ServiceLocator, onOpenMessage: (Long) -> Unit, onNew
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
-            FloatingActionButton(onClick = onNewMessage, containerColor = OcreTeranga, contentColor = IndigoNuit) {
+            FloatingActionButton(onClick = onNewMessage, containerColor = AccentTeranga, contentColor = White) {
                 Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.new_message_title))
             }
         },

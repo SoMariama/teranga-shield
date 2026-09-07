@@ -28,10 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
-import com.terangashield.app.ui.theme.IndigoNuit
-import com.terangashield.app.ui.theme.OcreTeranga
-import com.terangashield.app.ui.theme.RiskHighBg
-import com.terangashield.app.ui.theme.RiskHighFg
+import com.terangashield.app.ui.theme.AccentTeranga
+import com.terangashield.app.ui.theme.AccentTerangaDark
+import com.terangashield.app.ui.theme.SurfaceDark
 import com.terangashield.app.ui.theme.White
 
 /** Écran d'appel entrant — affiché quand l'app est le téléphone par défaut. */
@@ -43,7 +42,7 @@ fun IncomingCallScreen(
     onAnswer: () -> Unit,
     onDecline: () -> Unit,
 ) {
-    Surface(modifier = Modifier.fillMaxSize(), color = IndigoNuit) {
+    Surface(modifier = Modifier.fillMaxSize(), color = SurfaceDark) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -59,15 +58,15 @@ fun IncomingCallScreen(
                 if (isReportedNumber) {
                     Row(
                         modifier = Modifier
-                            .background(RiskHighBg, androidx.compose.foundation.shape.RoundedCornerShape(999.dp))
-                            .padding(horizontal = 14.dp, vertical = 6.dp),
+                            .background(AccentTeranga)
+                            .padding(horizontal = 14.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(Icons.Filled.Warning, contentDescription = null, tint = RiskHighFg, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Filled.Warning, contentDescription = null, tint = White, modifier = Modifier.size(16.dp))
                         Text(
                             stringResource(R.string.incall_reported_number),
-                            color = RiskHighFg,
-                            style = MaterialTheme.typography.labelLarge,
+                            color = White,
+                            style = MaterialTheme.typography.labelMedium,
                             modifier = Modifier.padding(start = 6.dp),
                         )
                     }
@@ -95,13 +94,13 @@ fun IncomingCallScreen(
             ) {
                 CallActionButton(
                     icon = Icons.Filled.CallEnd,
-                    background = RiskHighFg,
+                    background = AccentTerangaDark,
                     contentDescription = stringResource(R.string.incall_decline),
                     onClick = onDecline,
                 )
                 CallActionButton(
                     icon = Icons.Filled.Call,
-                    background = OcreTeranga,
+                    background = AccentTeranga,
                     contentDescription = stringResource(R.string.incall_answer),
                     onClick = onAnswer,
                 )

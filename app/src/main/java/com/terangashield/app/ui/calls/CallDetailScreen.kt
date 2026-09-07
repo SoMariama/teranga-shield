@@ -27,7 +27,7 @@ import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.domain.model.RiskLevel
 import com.terangashield.app.ui.TerangaViewModelFactory
-import com.terangashield.app.ui.theme.riskColors
+import com.terangashield.app.ui.theme.riskTextColor
 
 @Composable
 fun CallDetailScreen(locator: ServiceLocator, callId: Long, onBack: () -> Unit) {
@@ -45,7 +45,6 @@ fun CallDetailScreen(locator: ServiceLocator, callId: Long, onBack: () -> Unit) 
             }
 
             val record = call ?: return@Column
-            val colors = riskColors(record.riskLevel)
 
             Column(
                 modifier = Modifier
@@ -56,7 +55,7 @@ fun CallDetailScreen(locator: ServiceLocator, callId: Long, onBack: () -> Unit) 
                 Text(
                     "${(record.finalScore * 100).toInt()}%",
                     style = MaterialTheme.typography.headlineLarge,
-                    color = colors.foreground,
+                    color = riskTextColor(record.riskLevel),
                 )
             }
 

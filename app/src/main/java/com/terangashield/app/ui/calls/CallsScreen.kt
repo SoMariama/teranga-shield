@@ -28,8 +28,8 @@ import com.terangashield.app.domain.model.EventType
 import com.terangashield.app.ui.TerangaViewModelFactory
 import com.terangashield.app.ui.components.ActivityRow
 import com.terangashield.app.ui.model.ActivityItem
-import com.terangashield.app.ui.theme.IndigoNuit
-import com.terangashield.app.ui.theme.OcreTeranga
+import com.terangashield.app.ui.theme.AccentTeranga
+import com.terangashield.app.ui.theme.InkModernist
 import com.terangashield.app.ui.theme.White
 import com.terangashield.app.ui.util.rememberContactNames
 
@@ -48,10 +48,10 @@ fun CallsScreen(
         containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             Column(horizontalAlignment = androidx.compose.ui.Alignment.End, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                SmallFloatingActionButton(onClick = onOpenContacts, containerColor = White, contentColor = IndigoNuit) {
+                SmallFloatingActionButton(onClick = onOpenContacts, containerColor = White, contentColor = InkModernist) {
                     Icon(Icons.Filled.Contacts, contentDescription = stringResource(R.string.contacts_title))
                 }
-                FloatingActionButton(onClick = onOpenDialer, containerColor = OcreTeranga, contentColor = IndigoNuit) {
+                FloatingActionButton(onClick = onOpenDialer, containerColor = AccentTeranga, contentColor = White) {
                     Icon(Icons.Filled.Dialpad, contentDescription = stringResource(R.string.dialer_title))
                 }
             }
