@@ -71,13 +71,30 @@ class CallAudioAnalysisService : Service() {
     private suspend fun runAnalysisLoop() {
         val micConsentGiven = locator.userPreferencesRepository.consentRecord.first().micAnalysisConsentGiven
         val micAnalysisEnabled = locator.userPreferencesRepository.micAnalysisEnabled.first()
-        if (!micConsentGiven || !micAnalysisEnabled) return
+        if (!micConsentGiven || !micAnalysisEnabled) {
+            NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_mic_consent_missing)
+            return
+        }
+
+        val recordAudioGranted = ContextCompat.checkSelfPermission(
+            applicationContext,
+            android.Manifest.permission.RECORD_AUDIO,
+        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        if (!recordAudioGranted) {
+            NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_mic_permission_missing)
+            return
+        }
 
         val engine = locator.speechToTextEngine
-        // Sur les appareils sans reconnaisseur embarqué garanti hors-ligne (avant Android 12),
-        // on ne lance pas d'analyse réelle plutôt que de risquer un envoi réseau — voir
-        // RealSpeechToTextEngine.isAvailable(). Seul le simulateur de debug reste disponible.
-        if (!engine.isAvailable()) return
+        // Sur les appareils sans reconnaisseur embarqué garanti hors-ligne (avant Android 12), ou
+        // sans le module de reconnaissance vocale hors-ligne installé/à jour (dépend du fabricant
+        // et du pack de langue téléchargé sur l'appareil), on ne lance pas d'analyse réelle plutôt
+        // que de risquer un envoi réseau — voir RealSpeechToTextEngine.isAvailable(). Seul le
+        // simulateur de debug reste disponible dans ce cas.
+        if (!engine.isAvailable()) {
+            NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_stt_unavailable)
+            return
+        }
 
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return
 
@@ -89,10 +106,13 @@ class CallAudioAnalysisService : Service() {
         val language = locator.userPreferencesRepository.language.first()
         locator.riskAnalysisEngine.initialize()
 
+        NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_waiting_for_speaker)
+
         var listeningJob: Job? = null
         while (serviceScope.isActive) {
             val speakerOn = audioManager.isSpeakerphoneOn
             if (speakerOn && listeningJob?.isActive != true) {
+                NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_analyzing)
                 listeningJob = serviceScope.launch { listenAndScore(engine, language) }
             } else if (!speakerOn) {
                 listeningJob?.cancel()

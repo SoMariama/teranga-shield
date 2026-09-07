@@ -32,6 +32,13 @@
     <string name="consent_accept">I accept</string>
     <string name="consent_decline">I do not accept</string>
 
+    <!-- Analysis notification diagnostics (why analysis is or isn't running) -->
+    <string name="diagnostic_mic_consent_missing">Analysis off: microphone consent not given (Settings)</string>
+    <string name="diagnostic_mic_permission_missing">Analysis off: microphone permission denied to the app</string>
+    <string name="diagnostic_stt_unavailable">Analysis unavailable: offline speech recognition missing on this device</string>
+    <string name="diagnostic_waiting_for_speaker">Waiting for speakerphone to be turned on to analyze</string>
+    <string name="diagnostic_analyzing">Analyzing the conversation…</string>
+
     <string name="permissions_title">Last step</string>
     <string name="permissions_body">Android will now ask you to confirm these permissions.</string>
     <string name="permissions_grant">Continue</string>

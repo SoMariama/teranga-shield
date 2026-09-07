@@ -34,15 +34,25 @@ object NotificationHelper {
         )
     }
 
-    fun analysisForegroundNotification(context: Context): android.app.Notification {
+    fun analysisForegroundNotification(context: Context, textRes: Int = R.string.consent_mic_title): android.app.Notification {
         ensureChannels(context)
         return NotificationCompat.Builder(context, CHANNEL_ANALYSIS)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(context.getString(R.string.app_name))
-            .setContentText(context.getString(R.string.consent_mic_title))
+            .setContentText(context.getString(textRes))
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
+    }
+
+    /**
+     * Met à jour le texte de la notification de premier plan une fois qu'on sait pourquoi
+     * l'analyse tourne (ou ne tourne pas) — sert de diagnostic visible directement dans la barre
+     * de notifications, faute de pouvoir brancher un débogueur sur l'appareil de test.
+     */
+    fun updateAnalysisNotification(context: Context, textRes: Int) {
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        runCatching { manager.notify(NOTIFICATION_ID_ANALYSIS, analysisForegroundNotification(context, textRes)) }
     }
 
     fun showHighRiskAlert(context: Context, titleRes: Int, bodyRes: Int) {

@@ -60,7 +60,11 @@ class SettingsViewModel(
     fun setLanguage(language: AppLanguage) = viewModelScope.launch { prefs.setLanguage(language) }
     fun setSensitivity(sensitivity: DetectionSensitivity) = viewModelScope.launch { prefs.setSensitivity(sensitivity) }
     fun setTrustedContact(contact: TrustedContact) = viewModelScope.launch { prefs.setTrustedContact(contact) }
-    fun setMicAnalysisEnabled(enabled: Boolean) = viewModelScope.launch { prefs.setMicAnalysisEnabled(enabled) }
+    // recordMicConsent() renseigne à la fois le consentement ET l'activation : un simple
+    // setMicAnalysisEnabled() ne suffit pas si le consentement (coché à l'onboarding) n'a jamais
+    // été donné — l'interrupteur semblait "actif" en Réglages sans que l'analyse puisse jamais
+    // tourner (CallAudioAnalysisService exige les deux). Voir aussi ConsentScreen.
+    fun setMicAnalysisEnabled(enabled: Boolean) = viewModelScope.launch { prefs.recordMicConsent(enabled) }
     fun revokeAllAndResetOnboarding() = viewModelScope.launch { prefs.revokeAllConsentsAndReset() }
 
     // Outils de démonstration/QA (builds debug uniquement, voir SettingsScreen) — voir ScamSimulator.

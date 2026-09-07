@@ -75,7 +75,11 @@ fun ConsentScreen(locator: ServiceLocator, onNext: () -> Unit) {
                         viewModel.acceptMicConsent()
                         onNext()
                     },
-                    enabled = state.defaultAppsConsentChecked,
+                    // Les deux cases sont requises : l'analyse audio est au coeur du produit, pas
+                    // une option secondaire — un utilisateur qui ne coche que la première case ne
+                    // doit pas se retrouver avec l'analyse silencieusement bloquée pour toujours
+                    // (micAnalysisConsentGiven resterait false sans jamais être re-proposé).
+                    enabled = state.defaultAppsConsentChecked && state.micConsentChecked,
                     modifier = Modifier.weight(1f),
                 ) {
                     Text(stringResource(R.string.consent_accept))

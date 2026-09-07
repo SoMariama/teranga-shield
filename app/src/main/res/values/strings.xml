@@ -38,6 +38,13 @@
     <string name="consent_accept">J\'accepte</string>
     <string name="consent_decline">Je n\'accepte pas</string>
 
+    <!-- Diagnostic de la notification d'analyse en cours (pourquoi l'analyse tourne ou pas) -->
+    <string name="diagnostic_mic_consent_missing">Analyse désactivée : consentement micro non donné (Réglages)</string>
+    <string name="diagnostic_mic_permission_missing">Analyse désactivée : autorisation micro refusée à l\'application</string>
+    <string name="diagnostic_stt_unavailable">Analyse indisponible : reconnaissance vocale hors-ligne absente sur cet appareil</string>
+    <string name="diagnostic_waiting_for_speaker">En attente d\'activation du haut-parleur pour analyser</string>
+    <string name="diagnostic_analyzing">Analyse de la conversation en cours…</string>
+
     <!-- Permissions système -->
     <string name="permissions_title">Dernière étape</string>
     <string name="permissions_body">Android va maintenant vous demander de confirmer ces autorisations.</string>
