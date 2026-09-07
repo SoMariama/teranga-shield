@@ -137,6 +137,18 @@
             </intent-filter>
         </receiver>
 
+        <!-- Filet de sécurité : capture les SMS entrants même si l'app n'est pas (ou plus)
+             réellement le gestionnaire SMS par défaut au niveau système (voir le commentaire de
+             la classe) -->
+        <receiver
+            android:name=".service.sms.SmsReceivedFallbackReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Réception des MMS entrants (obligatoire pour le rôle app SMS par défaut) -->
         <receiver
             android:name=".service.sms.MmsWapPushReceiver"
