@@ -9,9 +9,10 @@ import com.terangashield.app.service.call.CurrentCallSession
 
 /**
  * Interception de l'appel entrant avant la sonnerie (flux "Appels", étapes 1 à 4 du prompt produit).
- * Contact connu -> aucune vérification automatique. Numéro signalé -> alerte immédiate à l'écran.
- * Numéro inconnu -> laissé sonner normalement ; la suite (proposition haut-parleur, analyse) est
- * prise en charge par [CallAudioAnalysisService] une fois l'appel décroché.
+ * Numéro signalé -> alerte immédiate à l'écran. Dans tous les cas (contact connu ou non), laissé
+ * sonner normalement ; la suite (proposition haut-parleur, analyse) est prise en charge par
+ * [CallAudioAnalysisService] une fois l'appel décroché — y compris pour les contacts connus, un
+ * contact compromis demandant un code étant un schéma d'arnaque réel.
  */
 class TerangaCallScreeningService : CallScreeningService() {
 

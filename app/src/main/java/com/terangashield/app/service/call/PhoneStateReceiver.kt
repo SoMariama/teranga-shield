@@ -8,15 +8,16 @@ import com.terangashield.app.service.CallAudioAnalysisService
 
 /**
  * Détecte le décroché (OFFHOOK) et la fin d'appel (IDLE) pour démarrer/arrêter l'analyse audio.
- * Ne déclenche l'analyse que pour les numéros inconnus (les contacts ne sont jamais analysés).
+ * Analyse tous les appels, y compris les contacts enregistrés — un contact compromis qui demande
+ * un code par téléphone est un schéma d'arnaque réel, exempter les contacts (choix initial du
+ * cahier des charges) créait un angle mort.
  */
 class PhoneStateReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE) ?: return
         when (state) {
             TelephonyManager.EXTRA_STATE_OFFHOOK -> {
-                val session = CurrentCallSession
-                if (session.phoneNumber != null && !session.isKnownContact) {
+                if (CurrentCallSession.phoneNumber != null) {
                     CallAudioAnalysisService.start(context)
                 }
             }

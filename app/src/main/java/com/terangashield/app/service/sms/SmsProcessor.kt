@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.first
 /**
  * Flux "Messages" du prompt produit : vérification expéditeur, analyse NLU + lien suspect,
  * badge de risque, alerte et notification du contact de confiance si le score est élevé.
+ *
+ * Tous les messages sont analysés, y compris ceux venant d'un contact enregistré — un compte de
+ * contact compromis qui envoie "donne-moi le code que tu viens de recevoir" à ses contacts est un
+ * schéma d'arnaque réel et courant ; exempter les contacts d'analyse (choix initial du cahier des
+ * charges) créait un angle mort. `isKnownContact` reste stocké pour l'affichage, mais ne
+ * court-circuite plus l'analyse.
  */
 class SmsProcessor(private val context: Context) {
 
@@ -23,33 +29,13 @@ class SmsProcessor(private val context: Context) {
         val sensitivity = locator.userPreferencesRepository.sensitivity.first()
         locator.smsRiskAnalyzer.updateSensitivity(sensitivity)
 
-        if (isKnownContact) {
-            locator.smsRepository.insert(
-                SmsRecordEntity(
-                    sender = sender,
-                    isKnownContact = true,
-                    timestampMillis = System.currentTimeMillis(),
-                    riskLevel = RiskLevel.SAFE,
-                    finalScore = 0f,
-                    reason = com.terangashield.app.domain.model.SmsRiskReason.NONE,
-                    detectedLanguage = language,
-                    bodyExcerpt = body.take(BODY_EXCERPT_MAX_CHARS),
-                    containsSuspiciousLink = false,
-                    suspiciousLinkUrl = null,
-                    opened = false,
-                    trustedContactNotified = false,
-                ),
-            )
-            return
-        }
-
         val result = locator.smsRiskAnalyzer.analyze(body, language)
         val notifyTrustedContact = result.riskLevel == RiskLevel.HIGH
 
         locator.smsRepository.insert(
             SmsRecordEntity(
                 sender = sender,
-                isKnownContact = false,
+                isKnownContact = isKnownContact,
                 timestampMillis = System.currentTimeMillis(),
                 riskLevel = result.riskLevel,
                 finalScore = result.score,
