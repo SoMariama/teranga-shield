@@ -7,6 +7,7 @@ import android.telecom.CallAudioState
 import android.telecom.VideoProfile
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +28,7 @@ class InCallActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -52,6 +54,7 @@ private fun InCallRoot(onFinish: () -> Unit) {
     val call by CallBridge.call.collectAsStateWithLifecycle()
     val callState by CallBridge.callState.collectAsStateWithLifecycle()
     val audioState by CallBridge.audioState.collectAsStateWithLifecycle()
+    val phoneNumber by CallBridge.phoneNumber.collectAsStateWithLifecycle()
 
     val currentCall = call
     LaunchedEffect(currentCall, callState) {
@@ -59,7 +62,6 @@ private fun InCallRoot(onFinish: () -> Unit) {
     }
     if (currentCall == null) return
 
-    val phoneNumber = currentCall.details.handle?.schemeSpecificPart.orEmpty()
     // CurrentCallSession n'est renseigné (et fiable) que pour les appels entrants, filtrés en
     // amont par TerangaCallScreeningService — pour un appel sortant (composé depuis l'app), on
     // n'affiche ni badge de contact ni badge de risque plutôt que de montrer un état obsolète.
@@ -67,23 +69,29 @@ private fun InCallRoot(onFinish: () -> Unit) {
         currentCall.details.callDirection == Call.Details.DIRECTION_INCOMING
     val isKnownContact = isIncoming && CurrentCallSession.isKnownContact
     val isReportedNumber = isIncoming && CurrentCallSession.isReportedNumber
+    val isSpeakerOn = audioState?.route == CallAudioState.ROUTE_SPEAKER
+    // Proposition d'activer le haut-parleur pour vérification (flux "Appels", étape 4 du prompt
+    // produit) : uniquement pour un numéro inconnu entrant, tant que le haut-parleur n'est pas
+    // déjà activé.
+    val showSpeakerPrompt = isIncoming && !isKnownContact && !isSpeakerOn
 
     when (callState) {
         Call.STATE_RINGING -> IncomingCallScreen(
-            phoneNumber = phoneNumber,
+            phoneNumber = phoneNumber ?: "",
             isKnownContact = isKnownContact,
             isReportedNumber = isReportedNumber,
             onAnswer = { currentCall.answer(VideoProfile.STATE_AUDIO_ONLY) },
             onDecline = { currentCall.reject(false, null) },
         )
         else -> ActiveCallScreen(
-            phoneNumber = phoneNumber,
+            phoneNumber = phoneNumber ?: "",
             isKnownContact = isKnownContact,
             isConnected = callState == Call.STATE_ACTIVE,
             isMuted = audioState?.isMuted ?: false,
-            isSpeakerOn = audioState?.route == CallAudioState.ROUTE_SPEAKER,
+            isSpeakerOn = isSpeakerOn,
+            showSpeakerPrompt = showSpeakerPrompt,
             onToggleMute = { CallBridge.setMuted(!(audioState?.isMuted ?: false)) },
-            onToggleSpeaker = { CallBridge.setSpeakerOn(audioState?.route != CallAudioState.ROUTE_SPEAKER) },
+            onToggleSpeaker = { CallBridge.setSpeakerOn(!isSpeakerOn) },
             onHangup = { currentCall.disconnect() },
         )
     }

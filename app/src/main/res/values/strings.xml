@@ -109,6 +109,8 @@
     <string name="incall_hangup">Raccrocher</string>
     <string name="incall_mute">Muet</string>
     <string name="incall_speaker">Haut-parleur</string>
+    <string name="incall_speaker_prompt">Numéro inconnu : activez le haut-parleur pour que Teranga Shield puisse analyser la conversation en temps réel.</string>
+    <string name="incall_speaker_prompt_action">Activer le haut-parleur</string>
     <string name="dialer_title">Clavier</string>
     <string name="dialer_call">Appeler</string>
     <string name="dialer_backspace">Effacer</string>

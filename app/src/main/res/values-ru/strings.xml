@@ -95,6 +95,8 @@
     <string name="incall_hangup">Завершить</string>
     <string name="incall_mute">Без звука</string>
     <string name="incall_speaker">Громкая связь</string>
+    <string name="incall_speaker_prompt">Неизвестный номер: включите громкую связь, чтобы Teranga Shield мог анализировать разговор в реальном времени.</string>
+    <string name="incall_speaker_prompt_action">Включить громкую связь</string>
     <string name="dialer_title">Клавиатура</string>
     <string name="dialer_call">Позвонить</string>
     <string name="dialer_backspace">Стереть</string>

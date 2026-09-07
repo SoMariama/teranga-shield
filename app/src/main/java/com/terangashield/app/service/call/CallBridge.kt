@@ -22,11 +22,21 @@ object CallBridge {
     private val _audioState = MutableStateFlow<CallAudioState?>(null)
     val audioState: StateFlow<CallAudioState?> = _audioState
 
+    // Le numéro (et le reste de Call.Details) n'est pas toujours disponible dès onCallAdded —
+    // Android le complète parfois après coup via onDetailsChanged. Sans écouter ce callback,
+    // l'UI lisait details.handle une seule fois et pouvait rester bloquée sur un numéro vide.
+    private val _phoneNumber = MutableStateFlow<String?>(null)
+    val phoneNumber: StateFlow<String?> = _phoneNumber
+
     private var inCallService: InCallService? = null
 
     private val callCallback = object : Call.Callback() {
         override fun onStateChanged(call: Call, newState: Int) {
             _callState.value = newState
+        }
+
+        override fun onDetailsChanged(call: Call, details: Call.Details) {
+            details.handle?.schemeSpecificPart?.let { _phoneNumber.value = it }
         }
     }
 
@@ -36,8 +46,10 @@ object CallBridge {
         if (call != null) {
             call.registerCallback(callCallback)
             _callState.value = call.state
+            _phoneNumber.value = call.details.handle?.schemeSpecificPart
         } else {
             _callState.value = Call.STATE_DISCONNECTED
+            _phoneNumber.value = null
         }
     }
 

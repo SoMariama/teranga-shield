@@ -5,15 +5,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +37,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
+import com.terangashield.app.ui.theme.OcreTeranga
 import com.terangashield.app.ui.theme.IndigoNuit
+import com.terangashield.app.ui.theme.RiskHighBg
 import com.terangashield.app.ui.theme.RiskHighFg
 import com.terangashield.app.ui.theme.White
 import kotlinx.coroutines.delay
@@ -44,6 +52,7 @@ fun ActiveCallScreen(
     isConnected: Boolean,
     isMuted: Boolean,
     isSpeakerOn: Boolean,
+    showSpeakerPrompt: Boolean,
     onToggleMute: () -> Unit,
     onToggleSpeaker: () -> Unit,
     onHangup: () -> Unit,
@@ -60,11 +69,14 @@ fun ActiveCallScreen(
 
     Surface(modifier = Modifier.fillMaxSize(), color = IndigoNuit) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -79,10 +91,34 @@ fun ActiveCallScreen(
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(top = 8.dp),
                 )
+
+                if (showSpeakerPrompt) {
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 24.dp)
+                            .fillMaxWidth()
+                            .background(RiskHighBg, RoundedCornerShape(16.dp))
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            stringResource(R.string.incall_speaker_prompt),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = RiskHighFg,
+                        )
+                        Button(
+                            onClick = onToggleSpeaker,
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = OcreTeranga, contentColor = IndigoNuit),
+                            modifier = Modifier.padding(top = 10.dp),
+                        ) {
+                            Text(stringResource(R.string.incall_speaker_prompt_action))
+                        }
+                    }
+                }
             }
 
             Row(
-                modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 ToggleCallButton(

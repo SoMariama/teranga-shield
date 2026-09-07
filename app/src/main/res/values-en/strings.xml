@@ -95,6 +95,8 @@
     <string name="incall_hangup">Hang up</string>
     <string name="incall_mute">Mute</string>
     <string name="incall_speaker">Speaker</string>
+    <string name="incall_speaker_prompt">Unknown number: turn on speakerphone so Teranga Shield can analyze the conversation in real time.</string>
+    <string name="incall_speaker_prompt_action">Turn on speaker</string>
     <string name="dialer_title">Keypad</string>
     <string name="dialer_call">Call</string>
     <string name="dialer_backspace">Backspace</string>
