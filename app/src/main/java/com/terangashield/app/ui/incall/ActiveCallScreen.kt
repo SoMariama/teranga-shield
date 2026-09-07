@@ -108,7 +108,7 @@ fun ActiveCallScreen(
                         Button(
                             onClick = onToggleSpeaker,
                             colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = AccentTeranga, contentColor = White),
-                            shape = androidx.compose.foundation.shape.RectangleShape,
+                            shape = androidx.compose.ui.graphics.RectangleShape,
                             modifier = Modifier.padding(top = 10.dp),
                         ) {
                             Text(stringResource(R.string.incall_speaker_prompt_action))
