@@ -100,7 +100,7 @@ fun NewMessageScreen(
                                     finalScore = 0f,
                                     reason = SmsRiskReason.NONE,
                                     detectedLanguage = language,
-                                    bodyExcerpt = body.take(500),
+                                    body = body.take(2000),
                                     containsSuspiciousLink = false,
                                     suspiciousLinkUrl = null,
                                     opened = true,

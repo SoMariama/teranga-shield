@@ -13,6 +13,8 @@ data class SmsAnalysisResult(
     val riskLevel: RiskLevel,
     val reason: SmsRiskReason,
     val suspiciousLinkUrl: String?,
+    /** Phrases/mots-clés (et lien suspect le cas échéant) à surligner dans le message affiché. */
+    val highlightTerms: List<String> = emptyList(),
 )
 
 /**
@@ -45,7 +47,15 @@ class SmsRiskAnalyzer(
             else -> SmsRiskReason.NONE
         }
 
-        return SmsAnalysisResult(score = score, riskLevel = riskLevel, reason = reason, suspiciousLinkUrl = link)
+        val highlightTerms = if (link != null) nluResult.matchedTerms + link else nluResult.matchedTerms
+
+        return SmsAnalysisResult(
+            score = score,
+            riskLevel = riskLevel,
+            reason = reason,
+            suspiciousLinkUrl = link,
+            highlightTerms = highlightTerms,
+        )
     }
 
     companion object {

@@ -41,12 +41,14 @@ class SmsProcessor(private val context: Context) {
                 finalScore = result.score,
                 reason = result.reason,
                 detectedLanguage = language,
-                // Le corps complet n'est conservé que si le risque n'est pas élevé.
-                bodyExcerpt = if (result.riskLevel == RiskLevel.HIGH) null else body.take(BODY_EXCERPT_MAX_CHARS),
+                // Le message complet est conservé, y compris à risque élevé : l'utilisateur doit
+                // pouvoir relire exactement ce qui lui a été envoyé pour évaluer l'alerte.
+                body = body.take(BODY_MAX_CHARS),
                 containsSuspiciousLink = result.suspiciousLinkUrl != null,
                 suspiciousLinkUrl = result.suspiciousLinkUrl,
                 opened = false,
                 trustedContactNotified = notifyTrustedContact,
+                highlightTerms = result.highlightTerms,
             ),
         )
 
@@ -61,6 +63,6 @@ class SmsProcessor(private val context: Context) {
     }
 
     companion object {
-        private const val BODY_EXCERPT_MAX_CHARS = 500
+        private const val BODY_MAX_CHARS = 2000
     }
 }

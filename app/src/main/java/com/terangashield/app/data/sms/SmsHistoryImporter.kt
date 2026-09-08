@@ -71,7 +71,7 @@ class SmsHistoryImporter(
                             finalScore = 0f,
                             reason = SmsRiskReason.NONE,
                             detectedLanguage = language,
-                            bodyExcerpt = body.take(BODY_EXCERPT_MAX_CHARS),
+                            body = body.take(BODY_MAX_CHARS),
                             containsSuspiciousLink = false,
                             suspiciousLinkUrl = null,
                             opened = true,
@@ -87,6 +87,6 @@ class SmsHistoryImporter(
 
     companion object {
         private const val MAX_IMPORTED_MESSAGES = 500
-        private const val BODY_EXCERPT_MAX_CHARS = 500
+        private const val BODY_MAX_CHARS = 2000
     }
 }

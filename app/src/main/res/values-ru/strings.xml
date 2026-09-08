@@ -111,7 +111,6 @@
     <string name="alert_trusted_contact_notified">Ваш доверенный контакт был уведомлён по СМС.</string>
 
     <string name="incall_reported_number">Отмеченный номер</string>
-    <string name="incall_known_contact">Известный контакт</string>
     <string name="incall_incoming_label">Входящий звонок</string>
     <string name="incall_connecting">Соединение…</string>
     <string name="incall_answer">Ответить</string>

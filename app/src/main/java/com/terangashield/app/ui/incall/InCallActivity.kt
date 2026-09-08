@@ -18,6 +18,7 @@ import com.terangashield.app.service.call.CallBridge
 import com.terangashield.app.service.call.CurrentCallSession
 import com.terangashield.app.ui.theme.TerangaShieldTheme
 import com.terangashield.app.ui.util.ProvideAppLocale
+import com.terangashield.app.ui.util.rememberContactNames
 
 /**
  * Écran d'appel (entrant / en cours), lancé par [com.terangashield.app.service.call.TerangaInCallService]
@@ -62,30 +63,35 @@ private fun InCallRoot(onFinish: () -> Unit) {
     }
     if (currentCall == null) return
 
-    // CurrentCallSession n'est renseigné (et fiable) que pour les appels entrants, filtrés en
-    // amont par TerangaCallScreeningService — pour un appel sortant (composé depuis l'app), on
-    // n'affiche ni badge de contact ni badge de risque plutôt que de montrer un état obsolète.
+    // Recherche de contact en direct sur le numéro affiché, indépendante du sens de l'appel — un
+    // appel sortant vers un contact enregistré doit afficher son nom aussi bien qu'un entrant
+    // (CurrentCallSession.isKnownContact était auparavant ignoré pour les sortants "pour ne pas
+    // montrer un état obsolète", mais TerangaInCallService.ensureSessionStarted() le renseigne en
+    // réalité de façon fiable et synchrone dès le début de l'appel, entrant comme sortant).
     val isIncoming = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
         currentCall.details.callDirection == Call.Details.DIRECTION_INCOMING
-    val isKnownContact = isIncoming && CurrentCallSession.isKnownContact
+    val contactNames = rememberContactNames(listOfNotNull(phoneNumber))
+    val contactName = phoneNumber?.let { contactNames[it] }
+    // isReportedNumber reste réservé aux entrants : seul TerangaCallScreeningService vérifie la
+    // base des numéros signalés, et uniquement pour un appel entrant.
     val isReportedNumber = isIncoming && CurrentCallSession.isReportedNumber
     val isSpeakerOn = audioState?.route == CallAudioState.ROUTE_SPEAKER
     // Proposition d'activer le haut-parleur pour vérification (flux "Appels", étape 4 du prompt
     // produit) : uniquement pour un numéro inconnu entrant, tant que le haut-parleur n'est pas
     // déjà activé.
-    val showSpeakerPrompt = isIncoming && !isKnownContact && !isSpeakerOn
+    val showSpeakerPrompt = isIncoming && contactName == null && !isSpeakerOn
 
     when (callState) {
         Call.STATE_RINGING -> IncomingCallScreen(
             phoneNumber = phoneNumber ?: "",
-            isKnownContact = isKnownContact,
+            contactName = contactName,
             isReportedNumber = isReportedNumber,
             onAnswer = { currentCall.answer(VideoProfile.STATE_AUDIO_ONLY) },
             onDecline = { currentCall.reject(false, null) },
         )
         else -> ActiveCallScreen(
             phoneNumber = phoneNumber ?: "",
-            isKnownContact = isKnownContact,
+            contactName = contactName,
             isConnected = callState == Call.STATE_ACTIVE,
             isMuted = audioState?.isMuted ?: false,
             isSpeakerOn = isSpeakerOn,

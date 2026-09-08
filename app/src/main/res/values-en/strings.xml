@@ -111,7 +111,6 @@
     <string name="alert_trusted_contact_notified">Your trusted contact has been notified by SMS.</string>
 
     <string name="incall_reported_number">Reported number</string>
-    <string name="incall_known_contact">Known contact</string>
     <string name="incall_incoming_label">Incoming call</string>
     <string name="incall_connecting">Connecting…</string>
     <string name="incall_answer">Answer</string>

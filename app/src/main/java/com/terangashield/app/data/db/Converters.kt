@@ -38,4 +38,14 @@ class Converters {
     @TypeConverter
     fun toCategoryList(value: String): List<ScenarioCategory> =
         if (value.isBlank()) emptyList() else value.split(",").map { ScenarioCategory.valueOf(it) }
+
+    // Séparateur peu probable dans une phrase/mot-clé (contrairement à la virgule) — voir highlightTerms.
+    private val stringListDelimiter = "␞"
+
+    @TypeConverter
+    fun fromStringList(value: List<String>): String = value.joinToString(stringListDelimiter)
+
+    @TypeConverter
+    fun toStringList(value: String): List<String> =
+        if (value.isBlank()) emptyList() else value.split(stringListDelimiter)
 }

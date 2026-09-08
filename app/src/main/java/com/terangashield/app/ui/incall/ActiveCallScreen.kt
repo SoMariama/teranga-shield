@@ -47,7 +47,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun ActiveCallScreen(
     phoneNumber: String,
-    isKnownContact: Boolean,
+    contactName: String?,
     isConnected: Boolean,
     isMuted: Boolean,
     isSpeakerOn: Boolean,
@@ -80,10 +80,13 @@ fun ActiveCallScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = if (isKnownContact) stringResource(R.string.incall_known_contact) else phoneNumber,
+                    text = contactName ?: phoneNumber,
                     color = White,
                     style = MaterialTheme.typography.headlineLarge,
                 )
+                if (contactName != null) {
+                    Text(phoneNumber, color = White.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyLarge)
+                }
                 Text(
                     text = if (isConnected) formatDuration(elapsedSeconds) else stringResource(R.string.incall_connecting),
                     color = White.copy(alpha = 0.7f),

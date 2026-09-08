@@ -7,6 +7,8 @@ data class NluResult(
     val riskScore: Float,
     val matchedCategories: List<ScenarioCategory>,
     val confidence: Float,
+    /** Phrases/mots-clés ayant déclenché le score — utilisés pour surligner le passage suspect dans l'UI. */
+    val matchedTerms: List<String> = emptyList(),
 )
 
 /**

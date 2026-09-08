@@ -37,7 +37,7 @@ import com.terangashield.app.ui.theme.White
 @Composable
 fun IncomingCallScreen(
     phoneNumber: String,
-    isKnownContact: Boolean,
+    contactName: String?,
     isReportedNumber: Boolean,
     onAnswer: () -> Unit,
     onDecline: () -> Unit,
@@ -73,11 +73,11 @@ fun IncomingCallScreen(
                     androidx.compose.foundation.layout.Spacer(Modifier.padding(top = 16.dp))
                 }
                 Text(
-                    text = if (isKnownContact) stringResource(R.string.incall_known_contact) else phoneNumber,
+                    text = contactName ?: phoneNumber,
                     color = White,
                     style = MaterialTheme.typography.headlineLarge,
                 )
-                if (isKnownContact) {
+                if (contactName != null) {
                     Text(phoneNumber, color = White.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyLarge)
                 }
                 Text(

@@ -126,7 +126,6 @@
 
     <!-- Écran d'appel (téléphone par défaut) -->
     <string name="incall_reported_number">Numéro signalé</string>
-    <string name="incall_known_contact">Contact connu</string>
     <string name="incall_incoming_label">Appel entrant</string>
     <string name="incall_connecting">Connexion…</string>
     <string name="incall_answer">Décrocher</string>

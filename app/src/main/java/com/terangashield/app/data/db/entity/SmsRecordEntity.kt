@@ -16,8 +16,8 @@ data class SmsRecordEntity(
     val finalScore: Float,
     val reason: SmsRiskReason,
     val detectedLanguage: AppLanguage,
-    /** Aperçu conservé uniquement quand nécessaire à l'affichage ; jamais le corps complet pour un risque élevé. */
-    val bodyExcerpt: String?,
+    /** Corps intégral du message — l'utilisateur doit pouvoir relire exactement ce qui a été reçu. */
+    val body: String?,
     val containsSuspiciousLink: Boolean,
     val suspiciousLinkUrl: String?,
     val opened: Boolean,
@@ -25,4 +25,6 @@ data class SmsRecordEntity(
     val userFeedbackWasScam: Boolean? = null,
     /** Vrai pour un SMS envoyé par l'utilisateur depuis l'app (voir NewMessageScreen) — `sender` porte alors le destinataire. */
     val isOutgoing: Boolean = false,
+    /** Phrases/mots-clés (et lien suspect) à surligner dans [body] — voir MessageDetailScreen. */
+    val highlightTerms: List<String> = emptyList(),
 )
