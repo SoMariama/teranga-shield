@@ -37,5 +37,38 @@
     { "phrase": "je suis votre responsable des ressources humaines", "dampens": "TRUST_BUILDING", "dampenFactor": 0.5 },
     { "phrase": "c'est au sujet de votre entretien d'embauche", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.5 },
     { "phrase": "je vous appelle de votre agence bancaire habituelle où vous avez un rendez-vous", "dampens": "INSTITUTION_IMPERSONATION", "dampenFactor": 0.6 }
-  ]
+  ],
+  "keywordSignals": {
+    "SENSITIVE_INFO_REQUEST": [
+      {
+        "weight": 0.7,
+        "groups": [
+          ["envoie", "envoyez", "envoyer", "donne", "donnez", "donner", "communique", "communiquez", "dis-moi", "dites-moi", "transmets", "transmettez", "confirme", "confirmez", "partage", "partagez", "demande", "demandez", "demander", "exige", "exigez", "réclame", "réclamez"],
+          ["code", "mot de passe", "mdp", "identifiant", "numéro de carte", "cvv", "code secret", "code confidentiel", "code de vérification", "code pin", "pin"]
+        ]
+      },
+      {
+        "weight": 0.5,
+        "groups": [
+          ["code secret", "code confidentiel", "code de vérification", "cvv", "code otp"]
+        ]
+      }
+    ],
+    "FABRICATED_URGENCY": [
+      {
+        "weight": 0.3,
+        "groups": [
+          ["immédiatement", "tout de suite", "dans l'heure", "quelques minutes", "avant qu'il ne soit trop tard", "sera bloqué", "sera suspendu", "va être bloqué", "va être suspendu"]
+        ]
+      }
+    ],
+    "INSTITUTION_IMPERSONATION": [
+      {
+        "weight": 0.2,
+        "groups": [
+          ["banque", "impôts", "police", "gendarmerie", "opérateur", "sécurité sociale", "caf", "douane", "service client"]
+        ]
+      }
+    ]
+  }
 }

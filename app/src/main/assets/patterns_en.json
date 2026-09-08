@@ -37,5 +37,38 @@
     { "phrase": "I'm your HR manager", "dampens": "TRUST_BUILDING", "dampenFactor": 0.5 },
     { "phrase": "this is about your job interview", "dampens": "FABRICATED_URGENCY", "dampenFactor": 0.5 },
     { "phrase": "I'm calling from your usual branch where you have an appointment", "dampens": "INSTITUTION_IMPERSONATION", "dampenFactor": 0.6 }
-  ]
+  ],
+  "keywordSignals": {
+    "SENSITIVE_INFO_REQUEST": [
+      {
+        "weight": 0.7,
+        "groups": [
+          ["send", "give", "share", "tell me", "confirm", "reply with", "text me", "read me", "ask", "asks", "asking", "request", "requests", "requesting", "wants your"],
+          ["code", "password", "pin", "card number", "cvv", "verification code", "security code", "otp"]
+        ]
+      },
+      {
+        "weight": 0.5,
+        "groups": [
+          ["verification code", "security code", "one time code", "one-time code", "cvv", "card number"]
+        ]
+      }
+    ],
+    "FABRICATED_URGENCY": [
+      {
+        "weight": 0.3,
+        "groups": [
+          ["immediately", "right now", "within the hour", "few minutes left", "before it's too late", "will be suspended", "will be blocked", "will be locked"]
+        ]
+      }
+    ],
+    "INSTITUTION_IMPERSONATION": [
+      {
+        "weight": 0.2,
+        "groups": [
+          ["bank", "tax office", "police", "irs", "social security", "customs", "your carrier", "customer service"]
+        ]
+      }
+    ]
+  }
 }

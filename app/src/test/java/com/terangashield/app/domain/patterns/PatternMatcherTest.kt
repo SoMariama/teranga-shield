@@ -18,6 +18,17 @@ class PatternMatcherTest {
         legitimateContextAllowlist = listOf(
             LegitimateContextEntry("je vous appelle de l'hopital", "FABRICATED_URGENCY", 0.3f),
         ),
+        keywordSignals = mapOf(
+            "SENSITIVE_INFO_REQUEST" to listOf(
+                KeywordSignalRule(
+                    weight = 0.7f,
+                    groups = listOf(
+                        listOf("envoie", "donne", "dis-moi", "demande"),
+                        listOf("code", "mot de passe", "code secret"),
+                    ),
+                ),
+            ),
+        ),
     )
 
     @Test
@@ -56,6 +67,23 @@ class PatternMatcherTest {
         val withoutScore = withoutContext.riskScore
         val withScore = withContext.riskScore
         assertTrue("le score dampé ($withScore) doit être inférieur au score brut ($withoutScore)", withScore < withoutScore)
+    }
+
+    @Test
+    fun `keyword co-occurrence triggers even without a matching full phrase`() {
+        // Ne correspond à aucune phrase entière du dataset, mais combine un verbe de demande et
+        // un terme sensible — c'est exactement le cas d'un SMS/discours réel non scripté.
+        val result = PatternMatcher.score("il demande le code secret", dataset)
+        assertTrue(ScenarioCategory.SENSITIVE_INFO_REQUEST in result.matchedCategories)
+        assertTrue(result.riskScore > 0f)
+    }
+
+    @Test
+    fun `a single isolated keyword group does not trigger a two-group rule`() {
+        // "code" seul (ex. "code postal") sans verbe de demande associé ne doit pas déclencher
+        // l'alerte — c'est tout l'intérêt d'exiger la co-occurrence des deux groupes.
+        val result = PatternMatcher.score("merci de préciser votre code postal", dataset)
+        assertTrue(ScenarioCategory.SENSITIVE_INFO_REQUEST !in result.matchedCategories)
     }
 
     @Test

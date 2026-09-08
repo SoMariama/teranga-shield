@@ -24,6 +24,12 @@ object PatternMatcher {
                     categoryScore += entry.weight
                 }
             }
+            for (rule in dataset.keywordSignals[category].orEmpty()) {
+                val allGroupsPresent = rule.groups.all { group ->
+                    group.any { term -> normalizedText.contains(normalize(term)) }
+                }
+                if (allGroupsPresent) categoryScore += rule.weight
+            }
             if (categoryScore > 0f) categoryScores[category] = min(categoryScore, 1f)
         }
 

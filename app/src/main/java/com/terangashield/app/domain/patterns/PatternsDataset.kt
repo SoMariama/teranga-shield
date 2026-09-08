@@ -18,10 +18,25 @@ data class LegitimateContextEntry(
     val dampenFactor: Float = 0.5f,
 )
 
+/**
+ * Règle de détection par mots-clés (complément des phrases entières de [PatternEntry], trop
+ * strictes pour du langage courant — voir [com.terangashield.app.domain.patterns.PatternMatcher]).
+ * La règle ne se déclenche que si CHAQUE groupe de [groups] a au moins un terme présent dans le
+ * texte — un seul groupe suffit pour les règles à un seul groupe (ex. mots d'urgence isolés), tandis
+ * qu'une règle à deux groupes (ex. verbe d'action + terme sensible) exige la co-occurrence des deux,
+ * pour éviter qu'un mot isolé et courant ("code" dans "code postal") déclenche une alerte à lui seul.
+ */
+@Serializable
+data class KeywordSignalRule(
+    val weight: Float,
+    val groups: List<List<String>>,
+)
+
 @Serializable
 data class PatternsDataset(
     val language: String,
     val schemaVersion: Int = 1,
     val categories: Map<String, List<PatternEntry>>,
     val legitimateContextAllowlist: List<LegitimateContextEntry> = emptyList(),
+    val keywordSignals: Map<String, List<KeywordSignalRule>> = emptyMap(),
 )

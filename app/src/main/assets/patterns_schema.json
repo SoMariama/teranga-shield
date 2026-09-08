@@ -34,6 +34,16 @@
       "type": "array",
       "description": "Formulations légitimes à forte charge émotionnelle (hôpital, banque, employeur) qui doivent atténuer le score plutôt que le renforcer — voir la contrainte 'faux positifs'.",
       "items": { "$ref": "#/definitions/legitimateContextEntry" }
+    },
+    "keywordSignals": {
+      "type": "object",
+      "description": "Complément par mots-clés aux phrases entières de 'categories', trop strictes pour du langage courant (SMS, discours improvisé). Clé = même 4 catégories.",
+      "properties": {
+        "TRUST_BUILDING": { "$ref": "#/definitions/keywordSignalRuleList" },
+        "FABRICATED_URGENCY": { "$ref": "#/definitions/keywordSignalRuleList" },
+        "SENSITIVE_INFO_REQUEST": { "$ref": "#/definitions/keywordSignalRuleList" },
+        "INSTITUTION_IMPERSONATION": { "$ref": "#/definitions/keywordSignalRuleList" }
+      }
     }
   },
   "definitions": {
@@ -53,6 +63,30 @@
             "minimum": 0,
             "maximum": 1,
             "description": "Contribution au score si la phrase (ou une formulation proche) est détectée dans le texte transcrit."
+          }
+        }
+      }
+    },
+    "keywordSignalRuleList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["weight", "groups"],
+        "properties": {
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Contribution au score si la règle se déclenche."
+          },
+          "groups": {
+            "type": "array",
+            "minItems": 1,
+            "description": "La règle ne se déclenche que si CHAQUE groupe a au moins un terme présent dans le texte (co-occurrence). Un seul groupe = déclenchement sur simple présence d'un terme ; deux groupes ou plus = exige que les deux types de signaux apparaissent ensemble (ex. un verbe de demande ET un terme sensible), pour éviter qu'un mot isolé et courant déclenche une alerte à lui seul.",
+            "items": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
           }
         }
       }
