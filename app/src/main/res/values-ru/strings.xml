@@ -89,6 +89,19 @@
     <string name="settings_manage_default_apps">Управление ролями по умолчанию</string>
     <string name="settings_mic_consent_toggle">Анализ звука во время звонков</string>
 
+    <!-- Демонстрационные инструменты (отладка) -->
+    <string name="debug_tools_title">Демонстрационные инструменты (отладка)</string>
+    <string name="debug_tools_body">Воспроизводит сценарий через реальный конвейер обнаружения (имитация), без микрофона или реального звонка.</string>
+    <string name="debug_tool_risky_call">Опасный звонок</string>
+    <string name="debug_tool_safe_call">Безопасный звонок</string>
+    <string name="debug_tool_risky_sms">Опасное SMS</string>
+    <string name="debug_tool_safe_sms">Безопасное SMS</string>
+    <string name="debug_tool_risky_call_toast">Опасный звонок смоделирован</string>
+    <string name="debug_tool_safe_call_toast">Безопасный звонок смоделирован</string>
+    <string name="debug_tool_risky_sms_toast">Опасное SMS смоделировано</string>
+    <string name="debug_tool_safe_sms_toast">Безопасное SMS смоделировано</string>
+    <string name="debug_tool_toast_suffix"> — см. Главная / Звонки / Сообщения</string>
+
     <string name="alert_high_risk_call_title">Обнаружен высокий риск</string>
     <string name="alert_high_risk_call_body">Этот звонок имеет признаки мошенничества. Повесьте трубку, если сомневаетесь.</string>
     <string name="alert_trusted_contact_notified">Ваш доверенный контакт был уведомлён по СМС.</string>

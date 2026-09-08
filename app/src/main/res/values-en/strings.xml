@@ -89,6 +89,19 @@
     <string name="settings_manage_default_apps">Manage default roles</string>
     <string name="settings_mic_consent_toggle">Audio analysis during calls</string>
 
+    <!-- Demo tools (debug) -->
+    <string name="debug_tools_title">Demo tools (debug)</string>
+    <string name="debug_tools_body">Replays a scenario through the real detection pipeline (mock), without a microphone or a real call.</string>
+    <string name="debug_tool_risky_call">Risky call</string>
+    <string name="debug_tool_safe_call">Safe call</string>
+    <string name="debug_tool_risky_sms">Risky SMS</string>
+    <string name="debug_tool_safe_sms">Safe SMS</string>
+    <string name="debug_tool_risky_call_toast">Risky call simulated</string>
+    <string name="debug_tool_safe_call_toast">Safe call simulated</string>
+    <string name="debug_tool_risky_sms_toast">Risky SMS simulated</string>
+    <string name="debug_tool_safe_sms_toast">Safe SMS simulated</string>
+    <string name="debug_tool_toast_suffix"> — see Home / Calls / Messages</string>
+
     <string name="alert_high_risk_call_title">High risk detected</string>
     <string name="alert_high_risk_call_body">This call shows signs of a scam. Hang up if you have any doubt.</string>
     <string name="alert_trusted_contact_notified">Your trusted contact has been notified by SMS.</string>

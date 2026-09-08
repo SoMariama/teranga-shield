@@ -170,37 +170,43 @@ fun SettingsScreen(locator: ServiceLocator, onResetOnboarding: () -> Unit, onOpe
 @Composable
 private fun DebugSimulationSection(viewModel: SettingsViewModel) {
     val context = LocalContext.current
+    val toastSuffix = stringResource(R.string.debug_tool_toast_suffix)
     fun runAndNotify(label: String, action: () -> Unit) {
         action()
-        Toast.makeText(context, "$label — voir Accueil / Appels / Messages", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "$label$toastSuffix", Toast.LENGTH_SHORT).show()
     }
 
+    val riskyCallToast = stringResource(R.string.debug_tool_risky_call_toast)
+    val safeCallToast = stringResource(R.string.debug_tool_safe_call_toast)
+    val riskySmsToast = stringResource(R.string.debug_tool_risky_sms_toast)
+    val safeSmsToast = stringResource(R.string.debug_tool_safe_sms_toast)
+
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Outils de démonstration (debug)", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.debug_tools_title), style = MaterialTheme.typography.titleMedium)
         Text(
-            "Rejoue un scénario à travers le vrai pipeline de détection (mock), sans micro ni appel réel.",
+            stringResource(R.string.debug_tools_body),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(
-                onClick = { runAndNotify("Appel à risque simulé") { viewModel.simulateRiskyCall() } },
+                onClick = { runAndNotify(riskyCallToast) { viewModel.simulateRiskyCall() } },
                 modifier = Modifier.weight(1f),
-            ) { Text("Appel à risque") }
+            ) { Text(stringResource(R.string.debug_tool_risky_call)) }
             OutlinedButton(
-                onClick = { runAndNotify("Appel sûr simulé") { viewModel.simulateSafeCall() } },
+                onClick = { runAndNotify(safeCallToast) { viewModel.simulateSafeCall() } },
                 modifier = Modifier.weight(1f),
-            ) { Text("Appel sûr") }
+            ) { Text(stringResource(R.string.debug_tool_safe_call)) }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(
-                onClick = { runAndNotify("SMS à risque simulé") { viewModel.simulateRiskySms() } },
+                onClick = { runAndNotify(riskySmsToast) { viewModel.simulateRiskySms() } },
                 modifier = Modifier.weight(1f),
-            ) { Text("SMS à risque") }
+            ) { Text(stringResource(R.string.debug_tool_risky_sms)) }
             OutlinedButton(
-                onClick = { runAndNotify("SMS sûr simulé") { viewModel.simulateSafeSms() } },
+                onClick = { runAndNotify(safeSmsToast) { viewModel.simulateSafeSms() } },
                 modifier = Modifier.weight(1f),
-            ) { Text("SMS sûr") }
+            ) { Text(stringResource(R.string.debug_tool_safe_sms)) }
         }
     }
 }

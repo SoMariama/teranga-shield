@@ -101,6 +101,19 @@
     <string name="settings_manage_default_apps">Gérer les rôles par défaut</string>
     <string name="settings_mic_consent_toggle">Analyse audio pendant les appels</string>
 
+    <!-- Outils de démonstration (debug) -->
+    <string name="debug_tools_title">Outils de démonstration (debug)</string>
+    <string name="debug_tools_body">Rejoue un scénario à travers le vrai pipeline de détection (mock), sans micro ni appel réel.</string>
+    <string name="debug_tool_risky_call">Appel à risque</string>
+    <string name="debug_tool_safe_call">Appel sûr</string>
+    <string name="debug_tool_risky_sms">SMS à risque</string>
+    <string name="debug_tool_safe_sms">SMS sûr</string>
+    <string name="debug_tool_risky_call_toast">Appel à risque simulé</string>
+    <string name="debug_tool_safe_call_toast">Appel sûr simulé</string>
+    <string name="debug_tool_risky_sms_toast">SMS à risque simulé</string>
+    <string name="debug_tool_safe_sms_toast">SMS sûr simulé</string>
+    <string name="debug_tool_toast_suffix"> — voir Accueil / Appels / Messages</string>
+
     <!-- Alertes -->
     <string name="alert_high_risk_call_title">Risque élevé détecté</string>
     <string name="alert_high_risk_call_body">Cet appel présente des signes d\'arnaque. Raccrochez si vous avez un doute.</string>
