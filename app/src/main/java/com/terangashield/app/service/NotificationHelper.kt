@@ -34,16 +34,19 @@ object NotificationHelper {
         )
     }
 
-    fun analysisForegroundNotification(context: Context, textRes: Int = R.string.consent_mic_title): android.app.Notification {
+    private fun buildAnalysisNotification(context: Context, text: CharSequence): android.app.Notification {
         ensureChannels(context)
         return NotificationCompat.Builder(context, CHANNEL_ANALYSIS)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(context.getString(R.string.app_name))
-            .setContentText(context.getString(textRes))
+            .setContentText(text)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
     }
+
+    fun analysisForegroundNotification(context: Context, textRes: Int = R.string.consent_mic_title): android.app.Notification =
+        buildAnalysisNotification(context, context.getString(textRes))
 
     /**
      * Met à jour le texte de la notification de premier plan une fois qu'on sait pourquoi
@@ -51,8 +54,17 @@ object NotificationHelper {
      * de notifications, faute de pouvoir brancher un débogueur sur l'appareil de test.
      */
     fun updateAnalysisNotification(context: Context, textRes: Int) {
+        updateAnalysisNotificationText(context, context.getString(textRes))
+    }
+
+    /**
+     * Variante avec un texte dynamique (ex. dernier extrait entendu par la reconnaissance vocale)
+     * plutôt qu'une simple ressource fixe — sert à vérifier que le micro capte vraiment quelque
+     * chose pendant un appel, sans avoir besoin d'un débogueur branché sur l'appareil.
+     */
+    fun updateAnalysisNotificationText(context: Context, text: CharSequence) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        runCatching { manager.notify(NOTIFICATION_ID_ANALYSIS, analysisForegroundNotification(context, textRes)) }
+        runCatching { manager.notify(NOTIFICATION_ID_ANALYSIS, buildAnalysisNotification(context, text)) }
     }
 
     fun showHighRiskAlert(context: Context, titleRes: Int, bodyRes: Int) {

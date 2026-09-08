@@ -49,6 +49,7 @@
     <string name="diagnostic_stt_unavailable">Analyse indisponible : reconnaissance vocale hors-ligne absente sur cet appareil</string>
     <string name="diagnostic_waiting_for_speaker">En attente d\'activation du haut-parleur pour analyser</string>
     <string name="diagnostic_analyzing">Analyse de la conversation en cours…</string>
+    <string name="diagnostic_heard_prefix">Entendu : « %1$s »</string>
 
     <!-- Permissions système -->
     <string name="permissions_title">Dernière étape</string>

@@ -124,7 +124,17 @@ class CallAudioAnalysisService : Service() {
 
     private suspend fun listenAndScore(engine: SpeechToTextEngine, language: AppLanguage) {
         engine.listen(language).collect { result ->
-            if (result.isFinal && result.text.isNotBlank()) {
+            if (result.text.isNotBlank()) {
+                // On score aussi les résultats partiels, pas seulement "isFinal" : sur un appel en
+                // conversation continue (pas de silence net), le reconnaisseur peut mettre
+                // longtemps à émettre un résultat final, voire ne jamais en émettre — attendre
+                // uniquement "isFinal" retardait la détection ou la ratait complètement. Le
+                // dernier extrait entendu est aussi affiché dans la notification : seul moyen sans
+                // débogueur de vérifier que le micro capte vraiment la conversation.
+                NotificationHelper.updateAnalysisNotificationText(
+                    applicationContext,
+                    getString(R.string.diagnostic_heard_prefix, result.text.takeLast(HEARD_SNIPPET_MAX_CHARS)),
+                )
                 processTranscription(result)
             }
         }
@@ -186,6 +196,7 @@ class CallAudioAnalysisService : Service() {
     companion object {
         private const val FOREGROUND_NOTIFICATION_ID = 2001
         private const val TRANSCRIPT_EXCERPT_MAX_CHARS = 240
+        private const val HEARD_SNIPPET_MAX_CHARS = 40
 
         fun start(context: Context) {
             ContextCompat.startForegroundService(context, Intent(context, CallAudioAnalysisService::class.java))

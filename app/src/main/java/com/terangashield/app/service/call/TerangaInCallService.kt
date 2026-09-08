@@ -4,6 +4,7 @@ import android.content.Intent
 import android.telecom.Call
 import android.telecom.CallAudioState
 import android.telecom.InCallService
+import android.telecom.TelecomManager
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.data.db.entity.CallRecordEntity
 import com.terangashield.app.domain.model.AppLanguage
@@ -30,6 +31,12 @@ class TerangaInCallService : InCallService() {
         CallBridge.attachService(this)
     }
 
+    private val phoneAccountCallback = object : Call.Callback() {
+        override fun onStateChanged(call: Call, state: Int) {
+            if (state == Call.STATE_SELECT_PHONE_ACCOUNT) autoSelectPhoneAccount(call)
+        }
+    }
+
     override fun onCallAdded(call: Call) {
         super.onCallAdded(call)
         // Une exception ici ferait planter le service — Telecom coupe alors l'appel faute
@@ -38,12 +45,29 @@ class TerangaInCallService : InCallService() {
         runCatching { ensureSessionStarted(call) }
         CallBridge.setCall(call)
         runCatching {
+            call.registerCallback(phoneAccountCallback)
+            if (call.state == Call.STATE_SELECT_PHONE_ACCOUNT) autoSelectPhoneAccount(call)
+        }
+        runCatching {
             startActivity(
                 Intent(this, InCallActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 },
             )
         }
+    }
+
+    /**
+     * Sur un appareil double SIM sans carte par défaut pour les appels, un appel sortant reste
+     * bloqué en STATE_SELECT_PHONE_ACCOUNT en attendant un choix — sans écran de sélection (hors
+     * périmètre du clavier "minimal fonctionnel"), l'appel restait indéfiniment sur "Connexion…"
+     * sans jamais sonner ni échouer. On choisit la première carte disponible plutôt que de laisser
+     * l'appel bloqué sans explication.
+     */
+    private fun autoSelectPhoneAccount(call: Call) {
+        val telecomManager = getSystemService(TelecomManager::class.java) ?: return
+        val handle = runCatching { telecomManager.callCapablePhoneAccounts.firstOrNull() }.getOrNull() ?: return
+        runCatching { call.phoneAccountSelected(handle, false) }
     }
 
     override fun onCallRemoved(call: Call) {
