@@ -17,6 +17,12 @@ import com.terangashield.app.R
 import com.terangashield.app.ServiceLocator
 import com.terangashield.app.ui.TerangaViewModelFactory
 
+/**
+ * Contact de confiance : une suggestion, pas une obligation — utile surtout pour quelqu'un de
+ * moins familier avec les méthodes des arnaqueurs, qui bénéficie d'avoir un proche alerté en cas
+ * de risque élevé détecté. Le bouton "Continuer" n'est donc jamais bloqué par ces champs : passer
+ * cette étape sans rien remplir est un choix valide.
+ */
 @Composable
 fun TrustedContactSetupScreen(locator: ServiceLocator, onNext: () -> Unit) {
     val viewModel: OnboardingViewModel = viewModel(factory = TerangaViewModelFactory(locator))
@@ -26,19 +32,13 @@ fun TrustedContactSetupScreen(locator: ServiceLocator, onNext: () -> Unit) {
         title = stringResource(R.string.onboarding_trusted_contact_title),
         body = stringResource(R.string.onboarding_trusted_contact_body),
         nextLabel = stringResource(R.string.onboarding_next),
-        nextEnabled = state.trustedContactName.isNotBlank() && state.trustedContactPhone.isNotBlank(),
         onNext = {
-            viewModel.saveProfileAndTrustedContact()
+            viewModel.saveTrustedContact()
             onNext()
         },
         extraContent = {
             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedTextField(
-                    value = state.firstName,
-                    onValueChange = viewModel::setFirstName,
-                    label = { Text(stringResource(R.string.onboarding_first_name_label)) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                Text(stringResource(R.string.onboarding_trusted_contact_optional_hint), style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
                 OutlinedTextField(
                     value = state.trustedContactName,
                     onValueChange = viewModel::setTrustedContactName,

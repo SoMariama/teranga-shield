@@ -38,9 +38,17 @@ class OnboardingViewModel(private val prefs: UserPreferencesRepository) : ViewMo
         prefs.setLanguage(_uiState.value.language)
     }
 
-    fun saveProfileAndTrustedContact() = viewModelScope.launch {
+    fun saveProfile() = viewModelScope.launch {
+        prefs.setUserFirstName(_uiState.value.firstName)
+    }
+
+    /**
+     * Le contact de confiance est une suggestion, pas une étape obligatoire (voir écran dédié) :
+     * on n'enregistre quelque chose que si les deux champs sont renseignés, sans jamais bloquer
+     * la suite de l'onboarding si l'utilisateur préfère passer.
+     */
+    fun saveTrustedContact() = viewModelScope.launch {
         val state = _uiState.value
-        prefs.setUserFirstName(state.firstName)
         if (state.trustedContactName.isNotBlank() && state.trustedContactPhone.isNotBlank()) {
             prefs.setTrustedContact(
                 com.terangashield.app.domain.model.TrustedContact(state.trustedContactName, state.trustedContactPhone),

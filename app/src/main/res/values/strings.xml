@@ -22,10 +22,15 @@
     <string name="onboarding_privacy_title">Tout reste sur votre téléphone</string>
     <string name="onboarding_privacy_body">L\'analyse des appels et des messages se fait à 100%% localement. Aucune conversation n\'est envoyée à un serveur, jamais.</string>
 
-    <!-- Onboarding : contact de confiance -->
-    <string name="onboarding_trusted_contact_title">Votre contact de confiance</string>
-    <string name="onboarding_trusted_contact_body">En cas de risque élevé détecté, cette personne recevra un SMS avec un score de risque — jamais le contenu de la conversation.</string>
+    <!-- Onboarding : votre prénom -->
+    <string name="onboarding_your_name_title">Comment vous appelez-vous ?</string>
+    <string name="onboarding_your_name_body">Utilisé uniquement pour vous saluer dans l\'application.</string>
     <string name="onboarding_first_name_label">Prénom</string>
+
+    <!-- Onboarding : contact de confiance (facultatif) -->
+    <string name="onboarding_trusted_contact_title">Un contact de confiance (facultatif)</string>
+    <string name="onboarding_trusted_contact_body">Utile surtout si vous ne maîtrisez pas bien les techniques des arnaqueurs : en cas de risque élevé détecté, cette personne recevra un SMS avec un score de risque — jamais le contenu de la conversation.</string>
+    <string name="onboarding_trusted_contact_optional_hint">Vous pouvez laisser ces champs vides et continuer sans contact de confiance.</string>
     <string name="trusted_contact_name_label">Nom</string>
     <string name="trusted_contact_phone_label">Numéro de téléphone</string>
 

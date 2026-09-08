@@ -18,9 +18,13 @@
     <string name="onboarding_privacy_title">Всё остаётся на вашем телефоне</string>
     <string name="onboarding_privacy_body">Анализ звонков и сообщений происходит на 100%% локально. Ни один разговор никогда не отправляется на сервер.</string>
 
-    <string name="onboarding_trusted_contact_title">Ваш доверенный контакт</string>
-    <string name="onboarding_trusted_contact_body">Если будет обнаружен высокий риск, этот человек получит СМС с оценкой риска — но никогда содержание разговора.</string>
+    <string name="onboarding_your_name_title">Как вас зовут?</string>
+    <string name="onboarding_your_name_body">Используется только для приветствия в приложении.</string>
     <string name="onboarding_first_name_label">Имя</string>
+
+    <string name="onboarding_trusted_contact_title">Доверенный контакт (необязательно)</string>
+    <string name="onboarding_trusted_contact_body">Особенно полезно, если вы не очень хорошо знакомы с методами мошенников: при обнаружении высокого риска этот человек получит СМС с оценкой риска — но никогда содержание разговора.</string>
+    <string name="onboarding_trusted_contact_optional_hint">Вы можете оставить эти поля пустыми и продолжить без доверенного контакта.</string>
     <string name="trusted_contact_name_label">Имя контакта</string>
     <string name="trusted_contact_phone_label">Номер телефона</string>
 

@@ -18,9 +18,13 @@
     <string name="onboarding_privacy_title">Everything stays on your phone</string>
     <string name="onboarding_privacy_body">Analysis of calls and messages happens 100%% locally. No conversation is ever sent to a server.</string>
 
-    <string name="onboarding_trusted_contact_title">Your trusted contact</string>
-    <string name="onboarding_trusted_contact_body">If a high risk is detected, this person will receive a text with a risk score — never the content of the conversation.</string>
+    <string name="onboarding_your_name_title">What\'s your name?</string>
+    <string name="onboarding_your_name_body">Only used to greet you inside the app.</string>
     <string name="onboarding_first_name_label">First name</string>
+
+    <string name="onboarding_trusted_contact_title">A trusted contact (optional)</string>
+    <string name="onboarding_trusted_contact_body">Especially useful if you\'re not very familiar with scammer tactics: if a high risk is detected, this person will receive a text with a risk score — never the content of the conversation.</string>
+    <string name="onboarding_trusted_contact_optional_hint">You can leave these fields empty and continue without a trusted contact.</string>
     <string name="trusted_contact_name_label">Name</string>
     <string name="trusted_contact_phone_label">Phone number</string>
 

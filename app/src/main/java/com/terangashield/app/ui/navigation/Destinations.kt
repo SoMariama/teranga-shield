@@ -5,6 +5,7 @@ object Destinations {
     const val ONBOARDING_COUNTRY_LANGUAGE = "onboarding_country_language"
     const val ONBOARDING_WHY_DEFAULT_ROLES = "onboarding_why_default_roles"
     const val ONBOARDING_PRIVACY = "onboarding_privacy"
+    const val ONBOARDING_YOUR_NAME = "onboarding_your_name"
     const val ONBOARDING_TRUSTED_CONTACT = "onboarding_trusted_contact"
     const val ONBOARDING_CONSENT = "onboarding_consent"
     const val ONBOARDING_PERMISSIONS = "onboarding_permissions"

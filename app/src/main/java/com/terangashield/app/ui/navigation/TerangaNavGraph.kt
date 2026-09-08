@@ -38,6 +38,7 @@ import com.terangashield.app.ui.onboarding.PrivacyScreen
 import com.terangashield.app.ui.onboarding.TrustedContactSetupScreen
 import com.terangashield.app.ui.onboarding.WelcomeScreen
 import com.terangashield.app.ui.onboarding.WhyDefaultRolesScreen
+import com.terangashield.app.ui.onboarding.YourNameScreen
 import com.terangashield.app.ui.settings.ReportedNumbersScreen
 import com.terangashield.app.ui.settings.SettingsScreen
 
@@ -81,7 +82,13 @@ fun TerangaNavGraph(locator: ServiceLocator) {
                 WhyDefaultRolesScreen(onNext = { navController.navigate(Destinations.ONBOARDING_PRIVACY) })
             }
             composable(Destinations.ONBOARDING_PRIVACY) {
-                PrivacyScreen(onNext = { navController.navigate(Destinations.ONBOARDING_TRUSTED_CONTACT) })
+                PrivacyScreen(onNext = { navController.navigate(Destinations.ONBOARDING_YOUR_NAME) })
+            }
+            composable(Destinations.ONBOARDING_YOUR_NAME) {
+                YourNameScreen(
+                    locator = locator,
+                    onNext = { navController.navigate(Destinations.ONBOARDING_TRUSTED_CONTACT) },
+                )
             }
             composable(Destinations.ONBOARDING_TRUSTED_CONTACT) {
                 TrustedContactSetupScreen(
