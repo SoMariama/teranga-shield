@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.terangashield.app.R
 import com.terangashield.app.ui.theme.AccentTeranga
 import com.terangashield.app.ui.theme.AccentTerangaDark
+import com.terangashield.app.ui.theme.CallAnswerGreen
 import com.terangashield.app.ui.theme.SurfaceDark
 import com.terangashield.app.ui.theme.White
 
@@ -100,7 +101,7 @@ fun IncomingCallScreen(
                 )
                 CallActionButton(
                     icon = Icons.Filled.Call,
-                    background = AccentTeranga,
+                    background = CallAnswerGreen,
                     contentDescription = stringResource(R.string.incall_answer),
                     onClick = onAnswer,
                 )

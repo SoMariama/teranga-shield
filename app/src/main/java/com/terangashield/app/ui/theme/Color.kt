@@ -28,3 +28,8 @@ val RiskDarkAccentSoft = Color(0xFFFF9783)
 val White = Color(0xFFFFFFFF)
 val Ink = Color(0xFF201E1D)
 val InkMuted = Color(0xFF7D7979)
+
+// Exception à l'accent unique : décrocher/raccrocher un appel suit une convention universelle
+// (vert/rouge) bien plus forte que l'identité de marque — la respecter réduit l'erreur sous le
+// coup de la panique, justement le moment où l'app doit être la plus lisible possible.
+val CallAnswerGreen = Color(0xFF2E9E5B)
