@@ -6,9 +6,12 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -101,11 +104,17 @@ fun PermissionsRequestScreen(locator: ServiceLocator, onFinish: () -> Unit) {
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         androidx.compose.foundation.layout.Column(
-            modifier = Modifier.fillMaxSize().padding(24.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.safeDrawing),
         ) {
-            Text(stringResource(R.string.permissions_title), style = MaterialTheme.typography.headlineMedium)
-            Text(stringResource(R.string.permissions_body), style = MaterialTheme.typography.bodyLarge)
+            androidx.compose.foundation.layout.Column(
+                modifier = Modifier.weight(1f).fillMaxWidth().padding(24.dp),
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
+            ) {
+                Text(stringResource(R.string.permissions_title), style = MaterialTheme.typography.headlineMedium)
+                Text(stringResource(R.string.permissions_body), style = MaterialTheme.typography.bodyLarge)
+            }
 
             Button(
                 onClick = {
@@ -117,7 +126,7 @@ fun PermissionsRequestScreen(locator: ServiceLocator, onFinish: () -> Unit) {
                         else -> Unit
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(24.dp),
             ) {
                 Text(stringResource(R.string.permissions_grant))
             }

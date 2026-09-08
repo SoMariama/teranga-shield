@@ -4,11 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -44,28 +47,40 @@ fun ConsentScreen(locator: ServiceLocator, onNext: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+                .windowInsetsPadding(WindowInsets.safeDrawing),
         ) {
-            Text(stringResource(R.string.consent_title), style = MaterialTheme.typography.headlineMedium)
+            // Contenu défilant seul, dans sa propre zone en weight(1f) — les boutons restent ainsi
+            // ancrés en bas de l'écran plutôt que de suivre le contenu (deux cartes de consentement).
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                Text(stringResource(R.string.consent_title), style = MaterialTheme.typography.headlineMedium)
 
-            ConsentCard(
-                title = null,
-                body = stringResource(R.string.consent_default_apps_body),
-                checked = state.defaultAppsConsentChecked,
-                onCheckedChange = viewModel::setDefaultAppsConsentChecked,
-            )
+                ConsentCard(
+                    title = null,
+                    body = stringResource(R.string.consent_default_apps_body),
+                    checked = state.defaultAppsConsentChecked,
+                    onCheckedChange = viewModel::setDefaultAppsConsentChecked,
+                )
 
-            ConsentCard(
-                title = stringResource(R.string.consent_mic_title),
-                body = stringResource(R.string.consent_mic_body),
-                checked = state.micConsentChecked,
-                onCheckedChange = viewModel::setMicConsentChecked,
-                emphasized = true,
-            )
+                ConsentCard(
+                    title = stringResource(R.string.consent_mic_title),
+                    body = stringResource(R.string.consent_mic_body),
+                    checked = state.micConsentChecked,
+                    onCheckedChange = viewModel::setMicConsentChecked,
+                    emphasized = true,
+                )
+            }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
                 OutlinedButton(onClick = { /* reste sur l'écran : aucun consentement implicite */ }, modifier = Modifier.weight(1f)) {
                     Text(stringResource(R.string.consent_decline))
                 }

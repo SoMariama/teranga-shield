@@ -4,15 +4,19 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Bouclier stylisé, en ocre, centré sur la zone sûre de l'icône adaptative -->
+    <!-- Bouclier — encre quasi noire, direction "Modernist" -->
     <path
-        android:fillColor="#D9A441"
-        android:pathData="M54,20 L78,30 V52 C78,68 68,80 54,88 C40,80 30,68 30,52 V30 Z" />
+        android:fillColor="#201E1D"
+        android:pathData="M33,28 L75,28 L75,54 C75,62 71,69 66,75 L54,84 L42,75 C37,69 33,62 33,54 Z" />
+    <!-- Pointe du bouclier — accent unique -->
     <path
-        android:fillColor="#1E2A44"
-        android:pathData="M46,54 L52,60 L64,46"
-        android:strokeColor="#1E2A44"
-        android:strokeWidth="5"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+        android:fillColor="#EC3013"
+        android:pathData="M40,66 L68,66 L54,84 Z" />
+    <!-- Baobab en réserve (linteau + porte stylisés) -->
+    <path
+        android:fillColor="#F3F2F2"
+        android:pathData="M42,38 L66,38 L66,46 L42,46 Z" />
+    <path
+        android:fillColor="#F3F2F2"
+        android:pathData="M45,46 L63,46 L60,62 L48,62 Z" />
 </vector>

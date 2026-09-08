@@ -2,9 +2,12 @@ package com.terangashield.app.ui.onboarding
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -28,15 +31,27 @@ fun OnboardingScaffold(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .windowInsetsPadding(WindowInsets.safeDrawing),
         ) {
-            Text(title, style = MaterialTheme.typography.headlineMedium)
-            Text(body, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            extraContent?.invoke()
-            Button(onClick = onNext, enabled = nextEnabled, modifier = Modifier.fillMaxWidth()) {
-                Text(nextLabel)
+            // Contenu défilant seul, dans sa propre zone en weight(1f) — le bouton reste ainsi
+            // ancré en bas de l'écran quel que soit le nombre de contacts/permissions listés,
+            // au lieu de suivre le contenu et d'apparaître au milieu de l'écran sur un contenu court.
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                Text(title, style = MaterialTheme.typography.headlineMedium)
+                Text(body, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                extraContent?.invoke()
+            }
+            Column(modifier = Modifier.fillMaxWidth().padding(24.dp)) {
+                Button(onClick = onNext, enabled = nextEnabled, modifier = Modifier.fillMaxWidth()) {
+                    Text(nextLabel)
+                }
             }
         }
     }
