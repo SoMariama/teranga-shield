@@ -43,6 +43,7 @@
     <string name="diagnostic_waiting_for_speaker">Waiting for speakerphone to be turned on to analyze</string>
     <string name="diagnostic_analyzing">Analyzing the conversation…</string>
     <string name="diagnostic_heard_prefix">Heard: "%1$s"</string>
+    <string name="diagnostic_stt_error">Speech recognition error: %1$s</string>
 
     <string name="permissions_title">Last step</string>
     <string name="permissions_body">Android will now ask you to confirm these permissions.</string>

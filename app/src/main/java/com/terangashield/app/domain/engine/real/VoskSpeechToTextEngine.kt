@@ -1,9 +1,11 @@
 package com.terangashield.app.domain.engine.real
 
 import android.content.Context
+import com.terangashield.app.R
 import com.terangashield.app.domain.engine.SpeechToTextEngine
 import com.terangashield.app.domain.engine.TranscriptionResult
 import com.terangashield.app.domain.model.AppLanguage
+import com.terangashield.app.service.NotificationHelper
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -16,6 +18,7 @@ import org.vosk.android.RecognitionListener
 import org.vosk.android.SpeechService
 import org.vosk.android.StorageService
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 /**
@@ -25,6 +28,10 @@ import kotlin.coroutines.suspendCoroutine
  * détection elle-même fonctionnait bien (confirmé via les SMS). Vosk pilote directement
  * l'AudioRecord (source VOICE_RECOGNITION) au lieu de dépendre d'un service système dont on ne
  * contrôle ni la capture ni le traitement (suppression d'écho, etc.).
+ *
+ * Toute erreur d'initialisation ou de capture est remontée dans la notification d'analyse
+ * (au lieu d'être avalée silencieusement) : sans accès à un débogueur sur l'appareil de test,
+ * c'est le seul moyen de savoir POURQUOI rien ne s'affiche jamais dans "Entendu : « ... »".
  *
  * Un seul modèle est embarqué pour l'instant : français (~65 Mo, voir assets/vosk-model-fr).
  * Anglais et russe pourront être ajoutés de la même façon plus tard si besoin — voir [isAvailable].
@@ -42,20 +49,26 @@ class VoskSpeechToTextEngine(private val context: Context) : SpeechToTextEngine 
             return@callbackFlow
         }
 
-        val model = runCatching { loadModel() }.getOrNull()
-        if (model == null) {
+        val model = try {
+            loadModel()
+        } catch (e: Exception) {
+            reportError("unpack: ${e.message}")
             close()
             return@callbackFlow
         }
 
-        val recognizer = runCatching { Recognizer(model, SAMPLE_RATE) }.getOrNull()
-        if (recognizer == null) {
+        val recognizer = try {
+            Recognizer(model, SAMPLE_RATE)
+        } catch (e: Exception) {
+            reportError("Recognizer: ${e.message}")
             close()
             return@callbackFlow
         }
 
-        val speechService = runCatching { SpeechService(recognizer, SAMPLE_RATE) }.getOrNull()
-        if (speechService == null) {
+        val speechService = try {
+            SpeechService(recognizer, SAMPLE_RATE)
+        } catch (e: Exception) {
+            reportError("SpeechService: ${e.message}")
             recognizer.close()
             close()
             return@callbackFlow
@@ -80,12 +93,19 @@ class VoskSpeechToTextEngine(private val context: Context) : SpeechToTextEngine 
                 }
             }
 
-            override fun onError(exception: Exception?) = Unit
+            // Auparavant un no-op : une erreur de capture (ex. AudioRecord refusé pendant un appel
+            // actif) restait invisible, notification bloquée sur "analyse en cours" pour toujours.
+            override fun onError(exception: Exception?) {
+                reportError("capture: ${exception?.message ?: "inconnue"}")
+            }
 
             override fun onTimeout() = Unit
         }
 
-        speechService.startListening(listener)
+        val started = speechService.startListening(listener)
+        if (!started) {
+            reportError("startListening a retourné false")
+        }
 
         awaitClose {
             runCatching { speechService.stop() }
@@ -95,7 +115,7 @@ class VoskSpeechToTextEngine(private val context: Context) : SpeechToTextEngine 
     }
 
     /** Décompresse le modèle depuis les assets vers le stockage interne au premier appel, puis le réutilise. */
-    private suspend fun loadModel(): Model? {
+    private suspend fun loadModel(): Model {
         cachedModel?.let { return it }
         return suspendCoroutine { continuation ->
             StorageService.unpack(
@@ -103,9 +123,16 @@ class VoskSpeechToTextEngine(private val context: Context) : SpeechToTextEngine 
                 MODEL_ASSET_DIR,
                 MODEL_STORAGE_DIR,
                 { model -> cachedModel = model; continuation.resume(model) },
-                { continuation.resume(null) },
+                { exception -> continuation.resumeWithException(exception) },
             )
         }
+    }
+
+    private fun reportError(detail: String) {
+        NotificationHelper.updateAnalysisNotificationText(
+            context,
+            context.getString(R.string.diagnostic_stt_error, detail),
+        )
     }
 
     private fun extractText(hypothesisJson: String?, field: String): String? {

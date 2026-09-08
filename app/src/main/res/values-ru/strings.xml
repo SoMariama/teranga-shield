@@ -43,6 +43,7 @@
     <string name="diagnostic_waiting_for_speaker">Ожидание включения громкой связи для анализа</string>
     <string name="diagnostic_analyzing">Анализ разговора…</string>
     <string name="diagnostic_heard_prefix">Услышано: «%1$s»</string>
+    <string name="diagnostic_stt_error">Ошибка распознавания речи: %1$s</string>
 
     <string name="permissions_title">Последний шаг</string>
     <string name="permissions_body">Сейчас Android попросит вас подтвердить эти разрешения.</string>
