@@ -11,9 +11,11 @@ import com.terangashield.app.ui.MainActivity
 object NotificationHelper {
     const val CHANNEL_ANALYSIS = "call_analysis_foreground"
     const val CHANNEL_ALERTS = "risk_alerts"
+    const val CHANNEL_MESSAGES = "incoming_messages"
 
     private const val NOTIFICATION_ID_ANALYSIS = 1001
     private const val NOTIFICATION_ID_ALERT = 1002
+    private const val NOTIFICATION_ID_MESSAGE_BASE = 2_000_000
 
     fun ensureChannels(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
@@ -32,6 +34,40 @@ object NotificationHelper {
                 NotificationManager.IMPORTANCE_HIGH,
             ),
         )
+        manager.createNotificationChannel(
+            NotificationChannel(
+                CHANNEL_MESSAGES,
+                "Messages reçus",
+                NotificationManager.IMPORTANCE_DEFAULT,
+            ),
+        )
+    }
+
+    /**
+     * Notification standard pour un SMS reçu sans risque élevé (celui-ci a déjà sa propre alerte
+     * plus visible via [showHighRiskAlert]) — nécessaire depuis que l'app est le gestionnaire SMS
+     * par défaut : le système ne notifie plus lui-même les messages entrants, c'est à l'app de le
+     * faire, sans quoi un message normal arrive silencieusement sans que l'utilisateur le sache.
+     */
+    fun showNewMessageNotification(context: Context, messageId: Long, sender: String, bodyPreview: String) {
+        ensureChannels(context)
+        val intent = MainActivity.newIntent(context)
+        val pendingIntent = androidx.core.app.TaskStackBuilder.create(context)
+            .addNextIntentWithParentStack(intent)
+            .getPendingIntent(messageId.toInt(), android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE)
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_MESSAGES)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(sender)
+            .setContentText(bodyPreview)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        val manager = context.getSystemService(NotificationManager::class.java)
+        runCatching { manager?.notify(NOTIFICATION_ID_MESSAGE_BASE + messageId.toInt(), notification) }
     }
 
     private fun buildAnalysisNotification(context: Context, text: CharSequence): android.app.Notification {

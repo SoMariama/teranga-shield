@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.first
 
 /**
  * Flux "Messages" du prompt produit : vérification expéditeur, analyse NLU + lien suspect,
- * badge de risque, alerte et notification du contact de confiance si le score est élevé.
+ * badge de risque, alerte et notification du contact de confiance si le score est élevé — sinon
+ * notification standard de nouveau message (voir [NotificationHelper.showNewMessageNotification]).
  *
  * Tous les messages sont analysés, y compris ceux venant d'un contact enregistré — un compte de
  * contact compromis qui envoie "donne-moi le code que tu viens de recevoir" à ses contacts est un
@@ -32,7 +33,7 @@ class SmsProcessor(private val context: Context) {
         val result = locator.smsRiskAnalyzer.analyze(body, language)
         val notifyTrustedContact = result.riskLevel == RiskLevel.HIGH
 
-        locator.smsRepository.insert(
+        val messageId = locator.smsRepository.insert(
             SmsRecordEntity(
                 sender = sender,
                 isKnownContact = isKnownContact,
@@ -59,10 +60,16 @@ class SmsProcessor(private val context: Context) {
                 R.string.sms_link_warning_body,
             )
             locator.trustedContactNotifier.notifyHighRisk(EventType.SMS, (result.score * 100).toInt())
+        } else {
+            // Depuis que l'app est le gestionnaire SMS par défaut, le système ne notifie plus lui-même
+            // les messages entrants — sans ça, un message normal arrivait silencieusement, invisible.
+            val displayName = ContactsLookup.getContactDisplayName(context, sender) ?: sender
+            NotificationHelper.showNewMessageNotification(context, messageId, displayName, body.take(NOTIFICATION_PREVIEW_MAX_CHARS))
         }
     }
 
     companion object {
         private const val BODY_MAX_CHARS = 2000
+        private const val NOTIFICATION_PREVIEW_MAX_CHARS = 120
     }
 }
