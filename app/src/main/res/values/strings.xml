@@ -108,7 +108,7 @@
     <string name="settings_mic_consent_toggle">Analyse audio pendant les appels</string>
 
     <!-- Outils de démonstration (debug) -->
-    <string name="debug_tools_title">Outils de démonstration (debug)</string>
+    <string name="debug_tools_title">Outils de démonstration</string>
     <string name="debug_tools_body">Rejoue un scénario à travers le vrai pipeline de détection (mock), sans micro ni appel réel.</string>
     <string name="debug_tool_risky_call">Appel à risque</string>
     <string name="debug_tool_safe_call">Appel sûr</string>

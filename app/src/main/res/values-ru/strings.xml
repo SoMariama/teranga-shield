@@ -95,7 +95,7 @@
     <string name="settings_mic_consent_toggle">Анализ звука во время звонков</string>
 
     <!-- Демонстрационные инструменты (отладка) -->
-    <string name="debug_tools_title">Демонстрационные инструменты (отладка)</string>
+    <string name="debug_tools_title">Демонстрационные инструменты</string>
     <string name="debug_tools_body">Воспроизводит сценарий через реальный конвейер обнаружения (имитация), без микрофона или реального звонка.</string>
     <string name="debug_tool_risky_call">Опасный звонок</string>
     <string name="debug_tool_safe_call">Безопасный звонок</string>

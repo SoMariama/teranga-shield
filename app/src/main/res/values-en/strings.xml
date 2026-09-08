@@ -95,7 +95,7 @@
     <string name="settings_mic_consent_toggle">Audio analysis during calls</string>
 
     <!-- Demo tools (debug) -->
-    <string name="debug_tools_title">Demo tools (debug)</string>
+    <string name="debug_tools_title">Demo tools</string>
     <string name="debug_tools_body">Replays a scenario through the real detection pipeline (mock), without a microphone or a real call.</string>
     <string name="debug_tool_risky_call">Risky call</string>
     <string name="debug_tool_safe_call">Safe call</string>
