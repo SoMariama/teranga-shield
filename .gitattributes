@@ -1,1 +1,6 @@
 /gradlew text eol=lf
+
+# Modèle Vosk : fichiers binaires (matrices, graphes, index) — un heuristique texte/binaire mal
+# détecté sur certains petits fichiers casserait silencieusement le modèle (conversion LF -> CRLF
+# au checkout sur Windows, appliquée à des octets qui ne sont pas du texte).
+app/src/main/assets/vosk-model-fr/** -text

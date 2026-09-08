@@ -101,6 +101,11 @@ dependencies {
 
     // Téléphonie par défaut (CallScreeningService) et rôle SMS par défaut : APIs plateforme, pas de dépendance externe.
 
+    // Reconnaissance vocale hors-ligne embarquée (remplace le SpeechRecognizer système d'Android,
+    // dont la disponibilité et la capture audio pendant un appel se sont révélées peu fiables
+    // selon les appareils) — voir VoskSpeechToTextEngine. Modèle français embarqué dans les assets.
+    implementation("com.alphacephei:vosk-android:0.3.47")
+
     // --- Réservé pour l'intégration des vrais modèles ML (non inclus en V1, mocks utilisés à la place) ---
     // implementation("org.tensorflow:tensorflow-lite:2.16.1")
     // implementation("org.tensorflow:tensorflow-lite-support:0.4.4")

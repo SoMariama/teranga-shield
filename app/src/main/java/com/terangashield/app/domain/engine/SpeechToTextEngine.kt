@@ -14,17 +14,17 @@ data class TranscriptionResult(
  * Abstraction du moteur de transcription vocale locale.
  *
  * Modèle en flux (session d'écoute continue) plutôt qu'un appel par fenêtre audio brute : les
- * moteurs de reconnaissance vocale (y compris le reconnaisseur embarqué d'Android, utilisé par
- * [com.terangashield.app.domain.engine.real.RealSpeechToTextEngine]) gèrent eux-mêmes la capture
- * micro et la détection de fin de parole — leur imposer de découper l'audio à notre place aurait
- * nécessité de dupliquer cette logique inutilement, contrairement à un modèle qu'on héberge
- * nous-mêmes.
+ * moteurs de reconnaissance vocale gèrent eux-mêmes la capture micro et la détection de fin de
+ * parole — leur imposer de découper l'audio à notre place aurait nécessité de dupliquer cette
+ * logique inutilement, contrairement à un modèle qu'on héberge nous-mêmes.
  *
- * Implémentation V1 de test : [com.terangashield.app.domain.engine.mock.MockSpeechToTextEngine].
+ * Implémentation réelle : [com.terangashield.app.domain.engine.real.VoskSpeechToTextEngine]
+ * (modèle embarqué dans les assets, une langue à la fois — voir sa doc pour la couverture
+ * actuelle). Implémentation de test : [com.terangashield.app.domain.engine.mock.MockSpeechToTextEngine].
  */
 interface SpeechToTextEngine {
-    /** Vrai si ce moteur peut tourner entièrement hors ligne sur cet appareil. */
-    fun isAvailable(): Boolean
+    /** Vrai si ce moteur peut transcrire entièrement hors ligne cette langue sur cet appareil. */
+    fun isAvailable(language: AppLanguage): Boolean
 
     /**
      * Démarre une session d'écoute continue ; chaque résultat (partiel ou final) est émis au fil

@@ -86,12 +86,11 @@ class CallAudioAnalysisService : Service() {
         }
 
         val engine = locator.speechToTextEngine
-        // Sur les appareils sans reconnaisseur embarqué garanti hors-ligne (avant Android 12), ou
-        // sans le module de reconnaissance vocale hors-ligne installé/à jour (dépend du fabricant
-        // et du pack de langue téléchargé sur l'appareil), on ne lance pas d'analyse réelle plutôt
-        // que de risquer un envoi réseau — voir RealSpeechToTextEngine.isAvailable(). Seul le
-        // simulateur de debug reste disponible dans ce cas.
-        if (!engine.isAvailable()) {
+        val language = locator.userPreferencesRepository.language.first()
+        // Le modèle Vosk embarqué ne couvre pour l'instant que le français — voir
+        // VoskSpeechToTextEngine.isAvailable(). Seul le simulateur de debug reste disponible
+        // pour les autres langues.
+        if (!engine.isAvailable(language)) {
             NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_stt_unavailable)
             return
         }
@@ -103,7 +102,6 @@ class CallAudioAnalysisService : Service() {
         locator.smsRiskAnalyzer.updateSensitivity(sensitivity)
         locator.riskScorer.reset()
 
-        val language = locator.userPreferencesRepository.language.first()
         locator.riskAnalysisEngine.initialize()
 
         NotificationHelper.updateAnalysisNotification(applicationContext, R.string.diagnostic_waiting_for_speaker)
