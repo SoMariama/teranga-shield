@@ -145,6 +145,10 @@ class VoskSpeechToTextEngine(private val context: Context) : SpeechToTextEngine 
     companion object {
         private const val SAMPLE_RATE = 16000.0f
         private const val MODEL_ASSET_DIR = "vosk-model-fr"
-        private const val MODEL_STORAGE_DIR = "vosk-model-fr"
+        // Espace de rangement générique sur le stockage externe de l'app (StorageService.sync()
+        // range le modèle sous <externalFilesDir>/<STORAGE_DIR>/<ASSET_DIR>) — distinct du nom du
+        // modèle pour ne pas créer .../vosk-model-fr/vosk-model-fr, et permettre d'y ranger
+        // d'autres modèles (anglais, russe) plus tard sans collision.
+        private const val MODEL_STORAGE_DIR = "vosk-models"
     }
 }

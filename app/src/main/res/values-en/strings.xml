@@ -23,7 +23,7 @@
     <string name="onboarding_first_name_label">First name</string>
 
     <string name="onboarding_trusted_contact_title">A trusted contact (optional)</string>
-    <string name="onboarding_trusted_contact_body">Especially useful if you\'re not very familiar with scammer tactics: if a high risk is detected, this person will receive a text with a risk score — never the content of the conversation.</string>
+    <string name="onboarding_trusted_contact_body">Especially useful if you\'re not very familiar with scammer tactics. If a high risk is detected, this person will receive a text with a risk score, but never the content of the conversation.</string>
     <string name="onboarding_trusted_contact_optional_hint">You can leave these fields empty and continue without a trusted contact.</string>
     <string name="trusted_contact_name_label">Name</string>
     <string name="trusted_contact_phone_label">Phone number</string>
@@ -132,6 +132,6 @@
     <string name="outgoing_message_prefix">You → %1$s</string>
     <string name="contacts_title">Contacts</string>
     <string name="contacts_search">Search</string>
-    <string name="reported_numbers_note">Numbers you\'ve personally reported as a scam after a call or SMS. Not a list shared with other users — that would require a central server, not built yet.</string>
+    <string name="reported_numbers_note">Numbers you\'ve personally reported as a scam after a call or SMS. This isn\'t a list shared with other users yet, since that would require a central server that hasn\'t been built yet.</string>
     <string name="reported_numbers_empty">No reports yet.</string>
 </resources>

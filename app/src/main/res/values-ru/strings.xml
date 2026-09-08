@@ -23,7 +23,7 @@
     <string name="onboarding_first_name_label">Имя</string>
 
     <string name="onboarding_trusted_contact_title">Доверенный контакт (необязательно)</string>
-    <string name="onboarding_trusted_contact_body">Особенно полезно, если вы не очень хорошо знакомы с методами мошенников: при обнаружении высокого риска этот человек получит СМС с оценкой риска — но никогда содержание разговора.</string>
+    <string name="onboarding_trusted_contact_body">Особенно полезно, если вы не очень хорошо знакомы с методами мошенников. При обнаружении высокого риска этот человек получит СМС с оценкой риска, но никогда содержание разговора.</string>
     <string name="onboarding_trusted_contact_optional_hint">Вы можете оставить эти поля пустыми и продолжить без доверенного контакта.</string>
     <string name="trusted_contact_name_label">Имя контакта</string>
     <string name="trusted_contact_phone_label">Номер телефона</string>
@@ -132,6 +132,6 @@
     <string name="outgoing_message_prefix">Вы → %1$s</string>
     <string name="contacts_title">Контакты</string>
     <string name="contacts_search">Поиск</string>
-    <string name="reported_numbers_note">Номера, которые вы сами отметили как мошеннические после звонка или СМС. Это не список, общий с другими пользователями — для этого нужен центральный сервер, который пока не создан.</string>
+    <string name="reported_numbers_note">Номера, которые вы сами отметили как мошеннические после звонка или СМС. Это пока не список, общий с другими пользователями, потому что для этого нужен центральный сервер, который ещё не создан.</string>
     <string name="reported_numbers_empty">Пока нет жалоб.</string>
 </resources>
