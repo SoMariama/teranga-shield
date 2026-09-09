@@ -48,7 +48,7 @@ fun HeroStatusCard(
             horizontalArrangement = Arrangement.spacedBy(28.dp),
         ) {
             metrics.forEach { (label, value) ->
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         value.toString(),
                         style = MaterialTheme.typography.headlineLarge,

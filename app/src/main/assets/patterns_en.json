@@ -43,7 +43,7 @@
       {
         "weight": 0.7,
         "groups": [
-          ["send", "give", "share", "tell me", "confirm", "reply with", "text me", "read me", "ask", "asks", "asking", "request", "requests", "requesting", "wants your"],
+          ["send", "give", "share", "tell me", "confirm", "reply with", "text me", "read me", "ask", "asks", "asking", "request", "requests", "requesting", "wants your", "what's your", "what is your", "need your", "needs your"],
           ["code", "password", "pin", "card number", "cvv", "verification code", "security code", "otp"]
         ]
       },

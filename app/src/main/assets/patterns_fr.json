@@ -43,7 +43,7 @@
       {
         "weight": 0.7,
         "groups": [
-          ["envoie", "envoyez", "envoyer", "donne", "donnez", "donner", "communique", "communiquez", "dis-moi", "dites-moi", "transmets", "transmettez", "confirme", "confirmez", "partage", "partagez", "demande", "demandez", "demander", "exige", "exigez", "réclame", "réclamez"],
+          ["envoie", "envoyez", "envoyer", "donne", "donnez", "donner", "communique", "communiquez", "dis-moi", "dites-moi", "transmets", "transmettez", "confirme", "confirmez", "partage", "partagez", "demande", "demandez", "demander", "exige", "exigez", "réclame", "réclamez", "quel est ton", "quel est votre", "quelle est ton", "quelle est votre", "c'est quoi ton", "c'est quoi votre"],
           ["code", "mot de passe", "mdp", "identifiant", "numéro de carte", "cvv", "code secret", "code confidentiel", "code de vérification", "code pin", "pin"]
         ]
       },
