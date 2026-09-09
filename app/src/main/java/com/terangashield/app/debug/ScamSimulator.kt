@@ -27,9 +27,13 @@ class ScamSimulator(private val context: Context, private val locator: ServiceLo
     private val silentVoice = VoiceClassificationResult(0f, 0f, 0f)
     private val scamVoice = VoiceClassificationResult(0.4f, 0.3f, 0.2f)
 
+    /** Numéro plausible pour le pays choisi dans les réglages — le simulateur ne doit pas rester figé sur le Sénégal. */
+    private suspend fun simulatedNumber(localSuffix: String): String =
+        locator.userPreferencesRepository.country.first().dialCode + localSuffix
+
     /** Rejoue le schéma mise en confiance -> urgence fabriquée -> demande sensible jusqu'au risque élevé. */
     suspend fun simulateRiskyCall() {
-        val phoneNumber = "+221771234567"
+        val phoneNumber = simulatedNumber("771234567")
         val language = locator.userPreferencesRepository.language.first()
         val sensitivity = locator.userPreferencesRepository.sensitivity.first()
         locator.riskScorer.updateSensitivity(sensitivity)
@@ -68,7 +72,7 @@ class ScamSimulator(private val context: Context, private val locator: ServiceLo
 
     /** Rejoue une conversation anodine, ne devrait jamais dépasser le niveau "Sûr". */
     suspend fun simulateSafeCall() {
-        val phoneNumber = "+221781112233"
+        val phoneNumber = simulatedNumber("781112233")
         val language = locator.userPreferencesRepository.language.first()
         val sensitivity = locator.userPreferencesRepository.sensitivity.first()
         locator.riskScorer.updateSensitivity(sensitivity)
@@ -130,13 +134,13 @@ class ScamSimulator(private val context: Context, private val locator: ServiceLo
             "votre banque. J'ai besoin de votre numéro de carte pour vérifier votre identité. Donnez-moi " +
             "votre mot de passe pour que je puisse corriger le problème. Confirmez ici : " +
             "http://verification-compte-secure.example/confirm"
-        SmsProcessor(context).process(sender = "+221701112233", body = body)
+        SmsProcessor(context).process(sender = simulatedNumber("701112233"), body = body)
     }
 
     /** Un SMS ordinaire, ne devrait déclencher aucune alerte. */
     suspend fun simulateSafeSms() {
         SmsProcessor(context).process(
-            sender = "+221701112233",
+            sender = simulatedNumber("701112233"),
             body = "Bonjour, n'oublie pas d'acheter du pain en rentrant ce soir, merci !",
         )
     }
